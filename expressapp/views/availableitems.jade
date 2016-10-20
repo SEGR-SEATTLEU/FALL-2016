@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 Available Items
+  div
+  table
+    thead
+      tr
+        th Gender
+        th Size
+        th Name
+        th Available
+    tbody
+      each item in results
+        tr
+          td #{item.gender}
+          td #{item.size}
+          td #{item.name}
+          td #{item.AvailableAmount}

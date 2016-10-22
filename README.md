@@ -16,3 +16,5 @@ For this version of the project, you can do this:
 - Run ```DEBUG=myapp:* npm start``` (Mac) or ```set DEBUG=myapp:* & npm start``` (Windows)
 - Visit http://localhost:3000/available?pickupdate=2016-11-08&returndate=2016-11-13
 - You should see a table of the available items
+
+Kellie - Test to see if I can update repo (Will remove)

@@ -1,11 +1,18 @@
-var connection = require('../config/connection');
+var connection = require('../config/db-connection');
 
 
 function Gear() {
 
-    this.get = function (res) {
+    this.get = function (req, res) {
         connection.acquire(function (err, con) {
-            con.query('', function (err, result) {
+            con.query('CALL AvailableItems(\'' + req.query.startdate + '\',\'' + req.query.enddate + '\')', req, function (err, result) {
+                con.release();
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    console.log(result);
+                }
             });
         });
     };

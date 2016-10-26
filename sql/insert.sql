@@ -173,3 +173,9 @@ INSERT INTO reserved_item VALUES(5, 2, 260, 1, 5); /* 1 men's 10 hiking boots */
 INSERT INTO reserved_item VALUES(6, 2, 390, 1, 5); /* 1 women's 8 hiking boots */
 INSERT INTO reserved_item VALUES(7, 2, 650, 3, 5); /* 3 2-person tents */
 INSERT INTO reserved_item VALUES(8, 2, 580, 4, 5); /* 5 50 liter backpacking packs */
+
+/* Another request, overlapping but not same items */
+INSERT INTO request VALUES(3, 2, '2016-11-05', '2016-11-07', 5); /* Review approved */
+INSERT INTO reserved_item VALUES(9, 3, 10, 1, 5); /* 1 youth med fleece jacket */
+INSERT INTO reserved_item VALUES(10, 3, 510, 1, 5);  /* 1 Men's sm gloves */
+INSERT INTO reserved_item VALUES(11, 3, 630, 1, 5); /* 1 75 liter backpacking pack */

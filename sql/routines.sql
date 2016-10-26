@@ -18,12 +18,12 @@ CREATE PROCEDURE ReservedItems(IN `PickupDate` DATE, IN `ReturnDate` DATE) READS
 
 DROP PROCEDURE AvailableItems;
 CREATE PROCEDURE AvailableItems(IN `PickupDate` DATE, IN `ReturnDate` DATE) READS SQL DATA
-    SELECT inv.gender, inv.size, inv.name, (inv.total - res.total) as AvailableAmount
+	SELECT inv.gender, inv.size, inv.name, (inv.total - IFNULL(res.total, 0)) as AvailableAmount
     FROM
    /* Inventory */
    (SELECT gr.gender, sz.size, gi.`name`, gi.total_quantity total from gear_item gi join size sz on gi.size_id=sz.id join gender gr on gi.gender_id=gr.id)
    as inv
-   JOIN
+   LEFT JOIN
    /* Reserved items */
    (SELECT gr.gender, sz.size, gi.`name`, SUM(ri.quantity) total
 	FROM reserved_item ri 
@@ -33,7 +33,7 @@ CREATE PROCEDURE AvailableItems(IN `PickupDate` DATE, IN `ReturnDate` DATE) READ
 	WHERE
 	rq.end_date >= PickupDate AND rq.start_date <= ReturnDate
 	GROUP BY gender, size, name) as res
-    ON inv.gender = inv.res.gender AND inv.size = res.size AND inv.name = res.name;
+    ON inv.gender = res.gender AND inv.size = res.size AND inv.name = res.name;
     
 DROP PROCEDURE RequestsDueForReturn;
 CREATE PROCEDURE RequestsDueForReturn(IN `DueDate` DATE) READS SQL DATA
@@ -47,6 +47,7 @@ CREATE PROCEDURE RequestsDueForReturn(IN `DueDate` DATE) READS SQL DATA
         WHERE rq.end_date <= DueDate;
         
 CALL RequestsDueForReturn('2016-11-12');
+
 /*
 Examples:
 CALL Inventory;

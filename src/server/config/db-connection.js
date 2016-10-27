@@ -10,7 +10,7 @@ function Connection() {
             connectionLimit: 10,
             host: 'localhost',
             user: 'root',
-            password: '1234',
+            password: 'abc123',
             database: 'wta_new'
         });
     };

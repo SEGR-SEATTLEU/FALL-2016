@@ -1,11 +1,11 @@
 (function() {
   'use strict';
 
-  var core = angular.module('todo.core');
+  var core = angular.module('glls.core');
 
   var config = {
-    appErrorPrefix: '[todo Error] ',
-    appTitle: 'todo'
+    appErrorPrefix: '[glls Error] ',
+    appTitle: 'glls'
   };
 
   core.value('config', config);

@@ -1,9 +1,10 @@
 (function() {
   'use strict';
+  console.log("Inside app module");
 
-  angular.module('todo', [
-      'todo.core',
-	  'todo.todo'
+  angular.module('glls', [
+      'glls.core',
+      'gearAvailability'
   ]);
 
 })();

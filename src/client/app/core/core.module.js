@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('todo.core', [
+    .module('glls.core', [
       'ngAnimate', 'ngSanitize',
       'blocks.exception', 'blocks.logger', 'blocks.router',
       'ui.router'

@@ -1,0 +1,38 @@
+<!DOCYTPE html>
+<html ng-app="wta-gear-library">
+  <head>
+    <meta charset="UTF-8">
+    <title>Manage Returns</title>
+    <link href="styles/style.css" rel="stylesheet">
+  </head>
+  <body>
+  
+  <div ng-controller="ReturnsCtrl">
+      <div ng-repeat="request in requests">
+      <h3>Request {{request.requestId}} </h3>
+      <p>Borrower: {{request.borrower}} Due: {{request.dueDate.slice(0,10)}}</p>
+          <table>
+          <thead>
+            <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="item in request.items">
+            <td>{{item.gender}} {{item.size}} {{item.name}}</td>
+            <td>{{item.quantity}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <form action="{{'/checkin?id=' + request.requestId}}">
+          <input type='submit' value='Check in these items' />
+        </form>
+      </div>
+  </div>
+      <script src="angular.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+
+

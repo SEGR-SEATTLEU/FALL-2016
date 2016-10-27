@@ -155,7 +155,7 @@ INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(590, 
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(600, 'Backpacking Pack', 6, 44, 7); /* 60 Liter L */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(610, 'Backpacking Pack', 6, 45, 8); /* 65 Liter */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(620, 'Backpacking Pack', 6, 46, 3); /* 68 Liter  */
-INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(630, 'Backpacking Pack', 6, 47, 8); /* 75 Liter  */
+INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(630, 'Backpacking Pack', 6, 47, 8); /* 70 Liter  */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(640, 'Backpacking Pack', 6, 48, 3); /* 90 Liter  */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(650, 'Tent', 6, 55, 7); /* 2 person  */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(660, 'Tent', 6, 56, 13); /* 4 person  */

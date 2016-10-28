@@ -11,7 +11,7 @@ function Connection() {
             host: 'localhost',
             user: 'root',
             password: '1234',
-            database: 'wta_new'
+            database: 'wta'
         });
     };
 

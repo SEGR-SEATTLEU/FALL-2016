@@ -18,16 +18,10 @@ INSERT INTO gender VALUES(4, 'Kid''s');
 INSERT INTO gender VALUES(5, 'Adult');
 INSERT INTO gender VALUES(6, 'N/A');
 
-INSERT INTO `status` VALUES(1, 'Started');
-INSERT INTO `status` VALUES(2, 'Deleted');
-INSERT INTO `status` VALUES(3, 'Waiting Review');
-INSERT INTO `status` VALUES(4, 'Review in progress');
-INSERT INTO `status` VALUES(5, 'Review approved');
-INSERT INTO `status` VALUES(6, 'Review rejected');
-INSERT INTO `status` VALUES(7, 'Picked up');
-INSERT INTO `status` VALUES(8, 'Complete');
-INSERT INTO `status` VALUES(9, 'Incomplete');
-INSERT INTO `status` VALUES(10, 'Payment Received');
+INSERT INTO `status` VALUES(1, 'requested');
+INSERT INTO `status` VALUES(2, 'approved');
+INSERT INTO `status` VALUES(3, 'picked_up');
+INSERT INTO `status` VALUES(4, 'returned');
 
 INSERT INTO role VALUES(1, 'User');
 INSERT INTO role VALUES(2, 'Administrator');

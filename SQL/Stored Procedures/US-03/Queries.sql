@@ -1,3 +1,5 @@
+USE WTA;
+
 DELIMITER ;
 DROP PROCEDURE IF EXISTS create_request;
 DELIMITER $$
@@ -12,8 +14,8 @@ IF (check_gear_availability(@gears, StartDate, EndDate)) THEN
 
 	-- Create request in request table
 	select id into @status_id from status 
-	where request_status like '%created%';
-	INSERT INTO request(start_date, end_date, personnel_information_id,status_id) values(StartDate, EndDate, UserID, @status_id);
+	where status like '%requested%';
+	INSERT INTO request(start_date, end_date,customer_id,status_id) values(StartDate, EndDate, UserID, @status_id);
 	SET @request_id := (SELECT last_insert_id()); -- into RequestID;
 
 	-- Reserve the gear for the request
@@ -38,7 +40,7 @@ BEGIN
     IF(int_i < int_length) THEN
 		SET gear_id := (SELECT JSON_EXTRACT(gears, CONCAT('$[',int_i,'].id')));
         SET quantity := (SELECT JSON_EXTRACT(gears, CONCAT('$[',int_i,'].quantity')));
-		INSERT INTO reserved_item(Quantity, request_id, gear_item_id) values(quantity, requestID, gear_id);
+		INSERT INTO reserved_item(Quantity, request_id, item_id) values(quantity, requestID, gear_id);
 		SET int_i = int_i + 1;
 		ITERATE label1;
     END IF;
@@ -72,20 +74,20 @@ BEGIN
 			SELECT a.id as GearID, SUM(b.quantity) as quantity
 			FROM gear_item as a
 			JOIN reserved_item as b
-				ON a.id = b.gear_item_id
+				ON a.id = b.item_id
 			JOIN request as c
 				ON b.request_id = c.id
 			JOIN status as d
 				ON c.status_id = d.id
 			WHERE (c.start_date between StartDate and EndDate || c.end_date between StartDate and EndDate) AND
-				  (d.request_status LIKE '%created%' OR d.request_status LIKE '%approved%')
+				  (d.status LIKE '%requested%' OR d.status LIKE '%approved%' OR d.status like '%picked_up%')
 			GROUP BY GearID) 
 			as ReservedGears
 		right JOIN gear_item as Inventory
 			ON Inventory.id = ReservedGears.GearID
 		JOIN size
 			ON size.id = Inventory.size_id
-		GROUP BY Inventory.id, Inventory.name, size.name_of_size;
+		GROUP BY Inventory.id, Inventory.name, size.size;
 		SET @enabled = TRUE;
 
   -- Looping through gears and inserted them in the reserved_item table
@@ -108,14 +110,13 @@ BEGIN
 END$$
 DELIMITER ;
 
-
-/*SET @data_json = '{
+SET @data_json = '{
 	"startdate": "2016-01-01",
 	"enddate": "2016-02-02",
 	"gears" : [
 		{
 			"id": "1",
-			"quantity" : "40"
+			"quantity" : "2"
 		}
 		
 	]
@@ -126,4 +127,3 @@ SET @EndDate = '2016-02-02';
 
 
 CALL create_request(@StartDate, @EndDate, @data_json, 1);
-*/

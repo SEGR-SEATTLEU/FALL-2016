@@ -1,3 +1,5 @@
+CREATE DATABASE `wta`;
+
 USE `wta`;
 
 CREATE TABLE gender (

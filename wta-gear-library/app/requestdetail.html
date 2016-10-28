@@ -1,18 +1,17 @@
 <!DOCYTPE html>
+<base href="/"/>
 <html ng-app="wta-gear-library">
   <head>
     <meta charset="UTF-8">
-    <title>Manage Returns</title>
+    <title>Verify Returns</title>
     <link href="styles/style.css" rel="stylesheet">
   </head>
   <body>
-  <h2> Returns to Verify </h2>
-    <div ng-controller="ReturnsCtrl">
-      <div ng-repeat="request in requests" ng-hide="!requests.length">
-      <h3>Request #{{request.requestId}} </h3>
-      <div>Borrower: {{request.borrower}}</div>
-      <div>Due: {{request.dueDate.slice(0,10)}}</div>
-      <div>Status: {{request.status}}</div>
+  <h2>Request Verification</h2>
+    <div ng-controller="RequestDetailCtrl">
+      <div ng-repeat="request in requests">
+      <h3>Request {{request.requestId}} is now marked {{request.status}}</h3>
+      <p>Borrower: {{request.borrower}} Due: {{request.dueDate.slice(0,10)}}</p>
           <table>
           <thead>
             <tr>
@@ -27,13 +26,10 @@
           </tr>
           </tbody>
         </table>
-        <p><a href="{{'/checkin?id=' + request.requestId}}">Mark as returned &gt; &gt;</a></p>
+        <p><a href="/returns">&lt;&lt; back to manage returns</a></p>
       </div>
-      <div ng-hide="requests.length">
-        There are no returns to verify.
-      </div>
-  </div>
-    <script src="angular.js"></script>
+    </div>
+    <script src="angular.min.js"></script>
     <script src="angular-route.min.js"></script>
     <script src="./app.js"></script>
   </body>

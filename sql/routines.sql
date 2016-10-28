@@ -45,7 +45,7 @@ CREATE PROCEDURE RequestsDueForReturn() READS SQL DATA
         JOIN reserved_item ri ON rq.id = ri.request_id
         JOIN gear_item gi ON ri.item_id = gi.id
         JOIN size sz ON gi.size_id = sz.id JOIN gender gr on gi.gender_id = gr.id
-        WHERE st.id >= 7 AND st.id < 8;
+        WHERE st.id = 3;
         
 DROP PROCEDURE IF EXISTS SetRequestStatus;
 CREATE PROCEDURE SetRequestStatus(IN `RequestId` INT, IN `Status` INT)

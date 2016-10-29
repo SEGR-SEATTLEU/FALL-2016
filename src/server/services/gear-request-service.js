@@ -3,11 +3,19 @@ var connection = require('../config/db-connection');
 function Request() {
 
     // Getting request details
-    // pre:
-    // post: 
-    this.get = function (res) {
+    // pre: request params are the id of the gear request to get details for
+    // post: gear request details are returned or error is logged
+    this.get = function (id, rest) {
         connection.acquire(function (err, con) {
-            con.query('', function (err, result) {
+            con.query('CALL get_gear_request_details('+id+')', function (err, result) {
+                con.release();
+                if(err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    console.log(result);
+                    res.send(result);
+                }
             });
         });
     };
@@ -29,7 +37,6 @@ function Request() {
             });    
         });
     };
-
 
 }
 

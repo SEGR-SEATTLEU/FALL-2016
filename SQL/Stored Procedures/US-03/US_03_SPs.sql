@@ -27,7 +27,7 @@ DROP PROCEDURE IF EXISTS reserve_gear;
 DELIMITER $$
 CREATE PROCEDURE reserve_gear(IN gears JSON, IN requestID INT)
 BEGIN
--- This procedure reserves the gears for hte request
+-- This procedure reserves the gears for the request
   DECLARE int_i INT DEFAULT 0;
   DECLARE int_length INT DEFAULT 0;
   DECLARE gear_id INT DEFAULT 0;
@@ -126,11 +126,3 @@ SET @data_json = '{
 		
 	]
 }';
-
-/*SET @StartDate = '2016-01-09';
-SET @EndDate = '2016-01-11';
-
-
-CALL create_request(@StartDate, @EndDate, @data_json, 1);
-CALL Gear_Availability(@StartDate, @EndDate);
-*/

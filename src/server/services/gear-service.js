@@ -18,13 +18,6 @@ function Gear() {
         });
     };
 
-    this.post = function (res) {
-        connection.acquire(function (err, con) {
-            con.query('', function (err, result) {
-            });
-        });
-    };
-
 }
 
 module.exports = new Gear();

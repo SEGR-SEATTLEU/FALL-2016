@@ -29,10 +29,11 @@ function Request() {
                 con.release();    
                 if (err) {
                     console.log(err);
+                    res.send(false);
                     throw err;
                 } else {
                     console.log(result);
-                    res.send(result);
+                    res.send(true);
                 }
             });    
         });

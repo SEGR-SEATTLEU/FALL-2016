@@ -1,9 +1,9 @@
 (function() {
   'use strict';
 
-  angular.module('todo', [
-      'todo.core',
-	  'todo.todo'
+  angular.module('wta', [
+      'wta.core',
+	    'wta.create-request'
   ]);
 
 })();

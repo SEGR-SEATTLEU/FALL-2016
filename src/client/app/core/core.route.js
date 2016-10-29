@@ -2,12 +2,12 @@
   'use strict';
 
   angular
-    .module('todo.core')
+    .module('wta.core')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
   function appRun(routerHelper) {
-    var otherwise = '/todo';
+    var otherwise = '/create-request';
     routerHelper.configureStates(getStates(), otherwise);
   }
 

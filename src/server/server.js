@@ -9,7 +9,16 @@ var app = express();
 
 // Configured app with body parser for accepting POST requests.
 app.use(bodyparser.urlencoded({ extended: true }));
-app.use(bodyparser.json());  
+app.use(bodyparser.json());
+
+app.all('*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    req.header('Access-Control-Allow-Origin', '*');
+    req.header('Access-Control-Allow-Header', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 
 connection.init();
 gearRequestController.configure(app);

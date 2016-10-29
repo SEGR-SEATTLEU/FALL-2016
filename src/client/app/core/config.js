@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var core = angular.module('todo.core');
+  var core = angular.module('wta.core');
 
   var config = {
     appErrorPrefix: '[todo Error] ',

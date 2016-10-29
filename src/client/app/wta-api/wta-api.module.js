@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   
-  angular.module('todo.api', [
+  angular.module('wta.api', [
         
   ]);
   

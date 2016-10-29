@@ -1,0 +1,66 @@
+<!DOCYTPE html>
+<base href="/"/>
+<html ng-app="wta-gear-library">
+  <head>
+    <meta charset="UTF-8">
+    <title>Verify Check-in</title>
+    <link href="/src/client/styles/app.css" rel="stylesheet">
+  </head>
+  <body>
+  <h2>Check-in Verification</h2>
+    <div ng-controller="CheckinVerification">
+      <div ng-repeat="request in requests">
+        <h3>Request {{request.requestId}} is now marked {{request.status}}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Borrower</th>
+              <th>Due:</th>
+              <th>Status:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{request.borrower}}</td>
+              <td>{{request.dueDate.slice(0,10)}}</td>
+              <td>{{request.status}}</td>
+            </tr>
+          </tbody>
+        </table>
+      
+        <p>Items in this request:
+
+        <table>
+          <thead>
+            <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="item in request.items">
+            <td>{{item.gender}} {{item.size}} {{item.name}}</td>
+            <td>{{item.quantity}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <p><a href="/src/client/returns.html">&lt;&lt; back to manage returns</a></p>
+      </div>
+    </div>
+    <script src="/bower_components/angular/angular.js"></script>
+    <!-- Core Application JavaScript -->
+        <script src="/src/client/app/app.module.js"></script>
+        <script src="/src/client/app/blocks/exception/exception.module.js"></script>
+        <script src="/src/client/app/blocks/logger/logger.module.js"></script>
+        <script src="/src/client/app/blocks/router/router.module.js"></script>
+        <script src="/src/client/app/core/core.module.js"></script>
+        <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+        <script src="/src/client/app/blocks/exception/exception.js"></script>
+        <script src="/src/client/app/blocks/logger/logger.js"></script>
+        <script src="/src/client/app/blocks/router/router-helper.provider.js"></script>
+        <script src="/src/client/app/core/config.js"></script>
+        <script src="/src/client/app/core/core.route.js"></script>
+  </body>
+</html>
+
+

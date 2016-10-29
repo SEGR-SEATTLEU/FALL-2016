@@ -6,10 +6,10 @@
                     <form ng-submit="ga.getGearAvailability()">
                         <legend>Available Gear</legend>
                         <label>Pickup Date</label>
-                        <input type="text" class="input-medium" ng-model="ga.startDate"> 
+                        <md-content><md-datepicker ng-model="ga.startDate" md-placeholder="Enter date"></md-datepicker></md-content>
                         <br/>
                         <label>Return Date</label>
-                        <input type="text" class="input-medium" ng-model="ga.endDate"> 
+                        <md-content><md-datepicker ng-model="ga.endDate" md-placeholder="Enter date"></md-datepicker></md-content>
                         <br/>
                         <input class="btn btn-primary" type="submit" value="Get Availability">
                     </form> 

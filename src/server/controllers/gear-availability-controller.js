@@ -12,9 +12,5 @@ module.exports = {
         app.get('/gear_availability/', function (req, res) {
             gearRequestService.get(req, res);
         });
-
-        /*app.post('/request/', function (req, res) {
-            gearRequestService.post(req.body, res);
-        });*/
     }
 };

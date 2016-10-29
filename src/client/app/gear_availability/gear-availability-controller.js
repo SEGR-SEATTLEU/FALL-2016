@@ -15,15 +15,8 @@
     ga.endDate = "";
     ga.getGearAvailability = getGearAvailability;
     
-    activate();
-
-    function activate() {
-        getGearAvailability();
-        logger.info('Activated Gear Availability Controller');
-    }
-    
     function getGearAvailability() {
-      return $http.get(baseUrl)
+      return $http.get(baseUrl + "?startDate=" + ga.startDate + "&endDate=" + ga.endDate)
         .then(availabilityList)
         .catch(availabilityError);
     }

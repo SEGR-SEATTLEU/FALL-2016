@@ -1,6 +1,6 @@
 (function() {
   'use strict';
 
-  angular.module('gearAvailability', []);
+  angular.module('gearAvailability', ['ngMaterial']);
 
 })();

@@ -12,7 +12,8 @@
     
     var service = {
       createRequest : createRequest,
-      getAvailableGear: getAvailableGear
+      getAvailableGear: getAvailableGear,
+      getRequestSummary: getRequestSummary
     }
     return service;
     
@@ -53,6 +54,22 @@
         logger.error('XHR Failed for GET AvailableGear ' + error.data);
       }
     }
+
+    function getRequestSummary(requestID) {
+      var getRequestSummaryUrl = baseUrl + '/request/'+requestID;
+      return $http.get(getRequestSummaryUrl)
+        .then(getRequestSummaryComplete)
+        .catch(getRequestSummaryFailed);
+
+      function getRequestSummaryComplete(response) {
+        return response.data[0];
+      }
+
+      function getRequestSummaryFailed(error) {
+        logger.error('XHR Failed for Get RequestSummary ' + error.data);
+      }
+    }
+
     
   }
   

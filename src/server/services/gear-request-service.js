@@ -5,7 +5,7 @@ function Request() {
     // Getting request details
     // pre: request params are the id of the gear request to get details for
     // post: gear request details are returned or error is logged
-    this.get = function (id, rest) {
+    this.get = function (id, res) {
         connection.acquire(function (err, con) {
             con.query('CALL get_gear_request_details('+id+')', function (err, result) {
                 con.release();

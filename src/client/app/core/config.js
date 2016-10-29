@@ -4,8 +4,8 @@
   var core = angular.module('wta.core');
 
   var config = {
-    appErrorPrefix: '[todo Error] ',
-    appTitle: 'todo'
+    appErrorPrefix: '[wta Error] ',
+    appTitle: 'wta'
   };
 
   core.value('config', config);

@@ -1,0 +1,49 @@
+<header></header>
+<div class="general-padding">
+  <div class="row">
+    <div class="col-md-3">
+      <h1>{{vm.headerText}}</h1>
+    </div>
+  </div>
+  <div class="row">
+      <div ng-repeat="request in vm.requests" ng-hide="!vm.requests.length">
+      <h3>Request #{{request.requestId}} </h3>
+      <table>
+        <thead>
+          <tr>
+            <td>Borrower</td>
+            <td>Due:</td>
+            <td>Status:</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{request.borrower}}</td>
+            <td>{{request.dueDate.slice(0,10)}}</td>
+            <td>{{request.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Items in this request:</p>
+      <table>
+          <thead>
+            <tr>
+            <th>Quantity</th>
+            <th>Item</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="item in request.items">
+            <td>{{item.quantity}}</td>
+            <td>{{item.gender}} {{item.size}} {{item.name}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <p><a href="{{'http://localhost:3000/src/client/checkinverification.html#?id=' + request.requestId}}">Mark as returned &gt; &gt;</a></p>
+        <br />
+      </div>
+      <div ng-hide="vm.requests.length">
+        <p>There are no returns to verify.</p>
+      </div>
+
+

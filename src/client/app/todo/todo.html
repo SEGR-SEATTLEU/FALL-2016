@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row">
+        
+        <div class="col-md-2">
+            Search: <input ng-model="vm.searchQuery"><br/>
+            Sort by:
+            <select ng-model="vm.statusFilter">
+                <option value="null">All</option>
+                <option value="false">Active</option>
+                <option value="true">Completed</option>
+            </select><br/>
+            Insert Item: <input ng-model="vm.newItem"> <button ng-click="vm.insertTodoItem(vm.newItem)">Add Item</button><br/>
+            <button ng-click="vm.clearCompletedItems()">Clear Completed</button>
+        </div>
+        
+        <div class="col-md-10">
+            <ul class="todoItems">
+                <li ng-repeat="item in vm.todoList | filter:vm.searchQuery | ItemStatusFilter:vm.statusFilter" class="todo-listing">
+                    <input type="checkbox" ng-model="item.completed" ng-click="vm.updateTodoItem(item)"/>
+                    <span>{{item.title}}</span>
+                    <button ng-click="vm.removeTodoItem(item)">X</button>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+</div>

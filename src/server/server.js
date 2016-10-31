@@ -1,6 +1,7 @@
 var express = require('express');
 var connection = require('./config/db-connection');
 var bodyparser = require('body-parser');
+var gearReturnsController = require('./controllers/returns-controller');
 var gearRequestController = require('./controllers/gear-request-controller');
 var gearController = require('./controllers/gear-controller');
 var helloWorldController = require('./controllers/hello-world-controller');
@@ -23,6 +24,7 @@ app.all('*', function(req, res, next) {
 connection.init();
 gearRequestController.configure(app);
 helloWorldController.configure(app);
+gearReturnsController.configure(app);
 gearController.configure(app);
 
 var server = app.listen(8000, function () {

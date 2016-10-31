@@ -44,7 +44,7 @@ function Request() {
         });
     };
 
-    this.checkin = function (req, res) {
+    this.confirmReturn = function (req, res) {
       var id = req.query.id;
       console.log('Going to update request with id ' + id + ' as verified returned');
       var qry = `CALL MarkRequestReturned(\'${id}\');`;

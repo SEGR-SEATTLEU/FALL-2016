@@ -17,8 +17,6 @@
     /////////////////////
 
     function activate() {
-      // TODO: take this request id as a route parameter from whatever other table links
-      // to this page.
       getReturns().then(function(requests) {
         logger.info("Activated Request Summary"); 
       });
@@ -26,12 +24,15 @@
 
     function getReturns() {
       return WtaApi.getReturns().then(function(requests) {
-        console.log('in manage returns controller, setting vm.requests');
         vm.requests = requests;
-        console.log(vm.requests);
+        vm.confirmReturned = confirmReturned;
         return vm.requests;
       });
     }
+    
+    function confirmReturned(requestId) {
+      return WtaApi.confirmReturn(requestId).then(activate());
+    };
 
   }
 })();

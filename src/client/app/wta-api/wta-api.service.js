@@ -14,7 +14,8 @@
       createRequest : createRequest,
       getAvailableGear: getAvailableGear,
       getRequestSummary: getRequestSummary,
-      getReturns: getReturns
+      getReturns: getReturns,
+      confirmReturn: confirmReturn
     }
     return service;
     
@@ -86,6 +87,21 @@
       }
 
       function getReturnsFailed(error) {
+        logger.error('XHR Failed for Get RequestSummary ' + error.data);
+      }
+    }
+    
+    function confirmReturn(requestId) {
+      var confirmReturnsUrl = baseUrl + '/returns/confirm?id=' + requestId;
+      return $http.get(confirmReturnsUrl)
+        .then(confirmReturnsComplete)
+        .catch(confirmReturnsFailed);
+
+      function confirmReturnsComplete(response) {
+        return response.data;
+      }
+
+      function confirmReturnsFailed(error) {
         logger.error('XHR Failed for Get RequestSummary ' + error.data);
       }
     }

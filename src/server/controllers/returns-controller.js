@@ -6,8 +6,8 @@ module.exports = {
           gearReturnService.viewAllReturns(req, res);
         });
         
-        app.get('/checkin', function (req, res) {
-          gearReturnService.checkin(req, res);
+        app.get('/returns/confirm', function (req, res) {
+          gearReturnService.confirmReturn(req, res);
         });
         
         app.get('/requestdetail', function (req, res) {

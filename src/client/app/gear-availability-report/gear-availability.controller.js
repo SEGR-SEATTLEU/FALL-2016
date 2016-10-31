@@ -9,8 +9,8 @@
   function GearAvailabilityReportController(logger, WtaApi) {
     var vm = this;
 
-    vm.startDate = '10/31/2016';
-    vm.endDate = '11/4/2016';
+    vm.startDate = '';
+    vm.endDate = '12/12/2016';
     vm.gears = [];
     vm.headerText = 'Gear Availability Report';
 
@@ -22,6 +22,11 @@
 
     function activate() {
       logger.info("Activated Create Request");
+
+      $('#returnDatePicker').datetimepicker({
+          useCurrent: false, //Important! See issue #1075
+          format: 'MM/DD/YYYY'
+      });
       $("#pickupDatePicker").on("dp.change", function (e) {
           $('#returnDatePicker').data("DateTimePicker").minDate(e.date);
       });
@@ -31,8 +36,8 @@
     }
 
     function findAvailableGear() {
-      var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
-      var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
+      var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toString().indexOf('T'));
+      var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toString().indexOf('T'));
       WtaApi.getAvailableGear(startDate, endDate).then(function(gears) {
         vm.gears = gears;
       });

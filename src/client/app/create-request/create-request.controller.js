@@ -9,8 +9,9 @@
   function CreateRequestController(logger, WtaApi) {
     var vm = this;
 
-    vm.startDate = '10/31/2016';
-    vm.endDate = '11/4/2016';
+    vm.startDate = '';
+    vm.endDate = '';
+
     vm.gears = [];
     vm.needToCheckout = true;
     vm.headerText = 'Available Gear:';
@@ -26,6 +27,14 @@
 
     function activate() {
       logger.info("Activated Create Request");
+      
+     // vm.startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
+     // vm.endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
+
+      $('#returnDatePicker').datetimepicker({
+          useCurrent: false, //Important! See issue #1075
+          format: 'MM/DD/YYYY'
+      });
       $("#pickupDatePicker").on("dp.change", function (e) {
           $('#returnDatePicker').data("DateTimePicker").minDate(e.date);
       });
@@ -35,16 +44,16 @@
     }
 
     function findAvailableGear() {
-      var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
-      var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
+      var startDate = vm.startDate.toString().substring(0, vm.startDate.toString().indexOf('T'));
+      var endDate = vm.endDate.toString().substring(0, vm.endDate.toString().indexOf('T'));
       WtaApi.getAvailableGear(startDate, endDate).then(function(gears) {
         vm.gears = gears;
       });
     }
 
     function createRequest() {
-      var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
-      var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
+      var startDate = vm.startDate.toString().substring(0, vm.startDate.toString().indexOf('T'));
+      var endDate = vm.endDate.toString().substring(0, vm.endDate.toString().indexOf('T'));
       WtaApi.createRequest(startDate, endDate, vm.gears).then(function(res) {
         if( res === true ) {
           vm.requestSuccessful = true;

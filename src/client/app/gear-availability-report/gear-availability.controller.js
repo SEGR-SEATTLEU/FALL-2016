@@ -10,7 +10,7 @@
     var vm = this;
 
     vm.startDate = '';
-    vm.endDate = '12/12/2016';
+    vm.endDate = '';
     vm.gears = [];
     vm.headerText = 'Gear Availability Report';
 
@@ -36,8 +36,8 @@
     }
 
     function findAvailableGear() {
-      var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toString().indexOf('T'));
-      var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toString().indexOf('T'));
+      var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
+      var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
       WtaApi.getAvailableGear(startDate, endDate).then(function(gears) {
         vm.gears = gears;
       });

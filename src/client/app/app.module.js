@@ -5,7 +5,8 @@
       'wta.core',
 	    'wta.create-request',
       'wta.request-summary',
-      'wta.gear-availability-report'
-  ]);
+      'wta.gear-availability-report',
+      'wta.manage-returns'
+  ])
 
 })();

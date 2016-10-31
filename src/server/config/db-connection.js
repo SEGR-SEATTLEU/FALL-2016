@@ -8,10 +8,10 @@ function Connection() {
     this.init = function () {
         this.pool = mysql.createPool({
             connectionLimit: 10,
-            host     : 'localhost',
-            user     : 'expressuser',
-            database : 'wta',
-            password : 'pa55w0rD'
+            host: 'localhost',
+            user: 'root',
+            password: '1234',
+            database: 'wta'
         });
     };
 

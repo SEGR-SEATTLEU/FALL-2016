@@ -6,10 +6,13 @@
     .controller('GearAvailabilityReportController', GearAvailabilityReportController);
 
   GearAvailabilityReportController.$inject = ['logger', 'WtaApi'];
+
+  //activate();
   function GearAvailabilityReportController(logger, WtaApi) {
     var vm = this;
 
-    vm.startDate = '';
+    var date = new Date();
+    vm.startDate = date.toISOString().substring(0, date.toISOString().indexOf('T'));
     vm.endDate = '';
     vm.gears = [];
     vm.headerText = 'Gear Availability Report';

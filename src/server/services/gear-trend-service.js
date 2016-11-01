@@ -4,10 +4,8 @@ var moment = require('moment');
 function Gear() {
 
     this.get = function (req, res) {
-        var startDate = moment(req.query.startDate).format('YYYY-MM-DD');
-        var endDate = moment(req.query.endDate).format('YYYY-MM-DD');
         connection.acquire(function (err, con) {
-            con.query('CALL gear_availability(\'' + startDate + '\',\'' + endDate + '\')', req, function (err, result) {
+            con.query('CALL gear_request_trend(\'' + req.query.trendYear + '\')', req, function (err, result) {
                 con.release();
                 if (err) {
                     console.log(err);

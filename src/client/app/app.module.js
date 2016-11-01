@@ -4,7 +4,8 @@
 
   angular.module('glls', [
       'glls.core',
-      'gearAvailability'
+      'gearAvailability',
+      'gearTrend'
   ]);
 
 })();

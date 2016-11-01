@@ -13,9 +13,9 @@
   function getStates() {
     return [
       {
-        state: 'glls',
+        state: 'gear_availability',
         config: {
-          url: '/glls',
+          url: '/gear_availability',
           templateUrl: '/src/client/app/gear_availability/gear-availability.html',
           controller: 'gearAvailabilityController',
           controllerAs: 'ga',

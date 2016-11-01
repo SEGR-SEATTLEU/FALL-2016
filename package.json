@@ -18,5 +18,16 @@
     "client": "http-server -a 0.0.0.0 -p 3000",
     "server": "node src/server/server.js",
     "start": "concurrently \"npm run client\" \"npm run server\""
-  }
+  },
+  "main": "index.js",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SEGR-SEATTLEU/FALL-2016.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/SEGR-SEATTLEU/FALL-2016/issues"
+  },
+  "homepage": "https://github.com/SEGR-SEATTLEU/FALL-2016#readme"
 }

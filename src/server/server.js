@@ -1,9 +1,11 @@
 var express = require('express');
 var connection = require('./config/db-connection');
 var bodyparser = require('body-parser');
+var CronJob = require('cron').CronJob;
 var gearReturnsController = require('./controllers/returns-controller');
 var gearRequestController = require('./controllers/gear-request-controller');
 var gearController = require('./controllers/gear-controller');
+var notifyService = require('./services/notify-service');
 var helloWorldController = require('./controllers/hello-world-controller');
 var app = express();
 
@@ -30,3 +32,20 @@ gearController.configure(app);
 var server = app.listen(8000, function () {
     console.log('Server listening on port ' + server.address().port);
 });
+
+/* This cron job is for user story 6 (email notifications).
+ * It has (arbitrarily) been set to run every day at noon. It is also
+ * turned off by default to prevent inadvertent email spamming. To test
+ * the notifications, set the start flag to 'true' and choose an 
+ * appropriate time interval.
+ */
+var job = new CronJob('00 00 12 * * *', function() {
+    /* run job */
+    notifyService.Notify();
+
+    }, function() {
+        console.log('notification job has been stopped');
+    },
+    false,   /* disable the job by default */
+    'America/Los_Angeles' /* time zone is set to PST */
+);

@@ -15,7 +15,11 @@
       getAvailableGear: getAvailableGear,
       getRequestSummary: getRequestSummary,
       getReturns: getReturns,
-      confirmReturn: confirmReturn
+      confirmReturn: confirmReturn,
+      getGearRequests: getGearRequests,
+      approveRequest: approveRequest,
+      getGearTrend: getGearTrend
+
     }
     return service;
     
@@ -103,6 +107,51 @@
 
       function confirmReturnsFailed(error) {
         logger.error('XHR Failed for Get RequestSummary ' + error.data);
+      }
+    }
+
+    function getGearRequests() {
+      var getGearRequestsUrl = baseUrl + '/get_requests/';
+      return $http.get(getGearRequestsUrl)
+        .then(getGearRequestsComplete)
+        .catch(getGearRequestsFailed);
+
+      function getGearRequestsComplete(response) {
+        return response.data[0];
+      }
+
+      function getGearRequestsFailed(error) {
+        logger.error('XHR Failed for GET GearRequests' + error.data);
+      }
+    }
+
+    function approveRequest(requestId) {
+      var approveRequestUrl = baseUrl + '/approve_request/?requestId='+requestId;
+      return $http.post(approveRequestUrl,"")
+        .then(approveRequestComplete)
+        .catch(approveRequestFailed);
+        
+      function approveRequestComplete(response) {
+          return response.data;
+      }
+      
+      function approveRequestFailed(error) {
+          logger.error('XHR Failed for POST ApproveRequest '+error.data);
+      }
+    }
+
+    function getGearTrend(year) {
+      var gearTrendUrl = baseUrl + '/gear_trend/?trendYear='+year;
+      return $http.get(gearTrendUrl)
+        .then(gearTrendComplete)
+        .catch(gearTrendFailed);
+        
+      function gearTrendComplete(response) {
+          return response.data[0];
+      }
+      
+      function gearTrendFailed(error) {
+          logger.error('XHR Failed for POST GearTrend '+error.data);
       }
     }
     

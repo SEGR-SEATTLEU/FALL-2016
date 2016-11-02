@@ -4,23 +4,24 @@ DROP PROCEDURE IF EXISTS gear_availability;
 DELIMITER $$
 CREATE PROCEDURE gear_availability(IN StartDate DATE, IN EndDate DATE)
 BEGIN
-		SELECT  Inventory.id, Inventory.name, 
+		SELECT Inventory.id, Inventory.name, 
 			size.size,
-			IFNULL(Inventory.total_quantity - SUM(ReservedGears.quantity), Inventory.total_quantity) as QuantityAvailable	 
+			CASE WHEN (IFNULL(Inventory.total_quantity - SUM(ReservedGears.quantity), Inventory.total_quantity) < 0) THEN 0 ELSE
+				(IFNULL(Inventory.total_quantity - SUM(ReservedGears.quantity), Inventory.total_quantity))END as QuantityAvailable	 
 		FROM ( 
 			SELECT a.id as GearID, SUM(b.quantity) as quantity
-			FROM gear_item as a
+            FROM gear_item as a
 			JOIN reserved_item as b
 				ON a.id = b.item_id
 			JOIN request as c
 				ON b.request_id = c.id
 			JOIN status as d
 				ON c.status_id = d.id
-			WHERE (c.start_date between StartDate and EndDate || c.end_date between StartDate and EndDate) AND
+            WHERE (c.start_date between StartDate and EndDate || c.end_date between StartDate and EndDate) AND
 				  (d.status LIKE '%requested%' OR d.status LIKE '%approved%' OR d.status like '%picked_up%')
 			GROUP BY GearID) 
 			as ReservedGears
-		right JOIN gear_item as Inventory
+		RIGHT JOIN gear_item as Inventory
 			ON Inventory.id = ReservedGears.GearID
 		JOIN size
 			ON size.id = Inventory.size_id
@@ -29,4 +30,4 @@ BEGIN
  DELIMITER ;
  
  
- CALL gear_availability('2016-01-01', '2016-02-02')
+ CALL gear_availability('2016-12-01', '2016-12-10');

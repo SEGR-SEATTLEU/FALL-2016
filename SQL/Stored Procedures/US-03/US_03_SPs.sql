@@ -108,21 +108,3 @@ BEGIN
   RETURN TRUE;
 END$$
 DELIMITER ;
-
-SET @data_json = '{
-	"startdate": "2016-01-09",
-	"enddate": "2016-01-11",
-	"gears" : [
-		{
-			"id": "10",
-			"quantity" : "4"
-		}
-		
-	]
-}';
-
-
-set @startDate = '2016-01-01';
-SET @endDate = '2016-02-02';
-
-CALL create_request(@startDate, @endDate, @data_json, '1');

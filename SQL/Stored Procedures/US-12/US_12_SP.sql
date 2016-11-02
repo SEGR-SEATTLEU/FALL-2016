@@ -28,6 +28,3 @@ BEGIN
 		GROUP BY Inventory.id, Inventory.name, size.size;
  END$$
  DELIMITER ;
- 
- 
- CALL gear_availability('2016-12-01', '2016-12-10');

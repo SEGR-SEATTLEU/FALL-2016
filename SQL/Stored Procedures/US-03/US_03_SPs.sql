@@ -9,18 +9,15 @@ BEGIN
 
 SET @gears := (SELECT JSON_EXTRACT(JSON_data, '$.gears'));
 
--- Check to see if gears are STILL available. Aditional validation.
- IF (check_gear_availability(@gears, StartDate, EndDate)) THEN
+-- Create request in request table
+select id into @status_id from status 
+where status like '%requested%';
+INSERT INTO request(start_date, end_date,customer_id,status_id) values(StartDate, EndDate, UserID, @status_id);
+SET @request_id := (SELECT last_insert_id()); -- into RequestID;
 
-	-- Create request in request table
-	select id into @status_id from status 
-	where status like '%requested%';
-	INSERT INTO request(start_date, end_date,customer_id,status_id) values(StartDate, EndDate, UserID, @status_id);
-	SET @request_id := (SELECT last_insert_id()); -- into RequestID;
-
-	-- Reserve the gear for the request
-	CALL reserve_gear(@gears, @request_id);
- END IF;
+-- Reserve the gear for the request
+CALL reserve_gear(@gears, @request_id);
+    
 END$$
 DELIMITER ;
 DROP PROCEDURE IF EXISTS reserve_gear;

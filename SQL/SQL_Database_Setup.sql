@@ -1,13 +1,11 @@
 -- WTA Database Setup
 -- SEGR-5260 (SW Construction & Environments)
 
+DROP SCHEMA IF EXISTS WTA;
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
--- -----------------------------------------------------
--- SCHEMA wta
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- Schema wta
@@ -301,4 +299,358 @@ INSERT INTO request VALUES(3, 2, '2016-11-05', '2016-11-07', 3); -- Picked up
 INSERT INTO reserved_item VALUES(9, 3, 10, 1);  -- 1 youth med fleece jacket 
 INSERT INTO reserved_item VALUES(10, 3, 510, 1);  -- 1 Men's sm gloves 
 INSERT INTO reserved_item VALUES(11, 3, 630, 1); -- 1 75 liter backpacking pack 
+
+
+
+-- ====================================================================================================================================
+-- ====================================================================================================================================
+-- ====================================================================================================================================
+-- ====================================================================================================================================
+-- ====================================================================================================================================
+
+
+-- User Stories
+-- SEGR-5260 (SW Construction & Environments)
+use WTA;
+
+-- ================================================
+-- US 1 and US 12
+-- ================================================
+DELIMITER $$
+DROP PROCEDURE IF EXISTS gear_availability$$
+DROP TABLE IF EXISTS output$$
+DROP TABLE IF EXISTS temp$$
+SET SQL_SAFE_UPDATES=0$$
+
+CREATE PROCEDURE gear_availability(IN StartDate DATE, IN EndDate DATE)
+BEGIN
+
+	DECLARE item_id INT;
+	DECLARE item_name VARCHAR(45);
+	DECLARE size VARCHAR(45);
+    DECLARE total_quantity INT;
+	DECLARE reserved_quantity INT;
+    DECLARE temp_date DATE;
+    DECLARE done INT DEFAULT 0;
+    
+    DECLARE item_cur CURSOR FOR
+		SELECT i.id, i.name, s.size, i.total_quantity FROM gear_item i JOIN size s ON i.size_id=s.id;
+        
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	CREATE TEMPORARY TABLE output
+			(id INT, name VARCHAR(45), size VARCHAR(45), availability INT);
+
+	CREATE TEMPORARY TABLE temp
+			(requested_date DATE, availability INT);
+	
+    OPEN item_cur;
+    item_loop:
+    LOOP FETCH item_cur INTO item_id, item_name, size, total_quantity;
+
+			IF done = 1 THEN
+				LEAVE item_loop;
+			END IF;
+            
+            SET temp_date = StartDate;
+            DELETE FROM temp;
+            
+            /*Loops through each date of given date range*/
+			WHILE(temp_date <= EndDate) DO
+                
+                /*Calcuates approved quantity for each date*/
+				SELECT SUM(ri.quantity) INTO reserved_quantity FROM REQUEST r, RESERVED_ITEM ri 
+				WHERE r.id = ri.request_id AND r.status_id IN (1, 2, 3)
+				AND temp_date BETWEEN r.start_date AND r.end_date
+				AND ri.item_id=item_id;
+                
+				INSERT INTO temp VALUES(temp_date, total_quantity-reserved_quantity);
+                SET temp_date = DATE_ADD(temp_date, INTERVAL 1 DAY);
+                
+			END WHILE;
+            INSERT INTO output VALUES
+				(item_id, item_name, size, IFNULL((SELECT MIN(availability) FROM temp), total_quantity));
+
+	END LOOP item_loop;
+    CLOSE item_cur;
+	
+	/*Item Name and their available quantity for the given date range*/
+    SELECT id, name, size, availability AS QuantityAvailable FROM output WHERE availability <> 0;
+
+	DROP TABLE output;
+    DROP TABLE temp;
+    SET SQL_SAFE_UPDATES=0;
+
+END$$
+
+
+-- ================================================
+-- US 2
+-- ================================================
+DROP PROCEDURE IF EXISTS GetMoreGearDetails;
+CREATE PROCEDURE GetMoreGearDetails(IN `GearId` INT)
+	SELECT id, `name`, image_url, care_maintenance, sizing_table, description FROM gear_item WHERE gear_item.id = GearId;
+    
+-- ================================================
+-- US 3
+-- ================================================
+DELIMITER ;
+DROP PROCEDURE IF EXISTS create_request;
+DELIMITER $$
+CREATE PROCEDURE create_request(IN StartDate DATE, IN EndDate DATE, IN JSON_data JSON, IN UserID INT)
+BEGIN
+-- This procedure creates the WTA Request
+
+SET @gears := (SELECT JSON_EXTRACT(JSON_data, '$.gears'));
+
+-- Create request in request table
+select id into @status_id from status 
+where status like '%requested%';
+INSERT INTO request(start_date, end_date,customer_id,status_id) values(StartDate, EndDate, UserID, @status_id);
+SET @request_id := (SELECT last_insert_id()); -- into RequestID;
+
+-- Reserve the gear for the request
+CALL reserve_gear(@gears, @request_id);
+
+END$$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS reserve_gear;
+DELIMITER $$
+CREATE PROCEDURE reserve_gear(IN gears JSON, IN requestID INT)
+BEGIN
+-- This procedure reserves the gears for the request
+  DECLARE int_i INT DEFAULT 0;
+  DECLARE int_length INT DEFAULT 0;
+  DECLARE gear_id INT DEFAULT 0;
+  DECLARE quantity INT DEFAULT 0;
+  
+  SET int_length := (SELECT JSON_LENGTH(gears));
+
+  -- Looping through gears and inserted them in the reserved_item table
+  label1 : LOOP
+    IF(int_i < int_length) THEN
+		SET gear_id := (SELECT JSON_EXTRACT(gears, CONCAT('$[',int_i,'].id')));
+        SET quantity := (SELECT JSON_EXTRACT(gears, CONCAT('$[',int_i,'].quantity')));
+		INSERT INTO reserved_item(Quantity, request_id, item_id) values(quantity, requestID, gear_id);
+		SET int_i = int_i + 1;
+		ITERATE label1;
+    END IF;
+	LEAVE label1;
+  END LOOP;
+END$$
+DELIMITER ;
+
+-- ================================================
+-- US 5
+-- ================================================
+DELIMITER ;
+DROP PROCEDURE IF EXISTS get_gear_request_details;
+DELIMITER $$
+CREATE PROCEDURE get_gear_request_details(IN RequestID INT)
+BEGIN
+-- This procedure gets the details of a gear request
+
+SELECT req.start_date, req.end_date, quantity, st.status, gi.name, gi.image_url, gi.care_maintenance, gi.sizing_table, gi.description, gi.total_quantity, g.gender, si.size FROM wta.request req
+join reserved_item itm on req.id = itm.request_id
+join status st on req.status_id = st.id
+join gear_item gi on itm.item_id = gi.id
+join gender g on gi.gender_id = g.id
+join size si on gi.size_id = si.id
+where req.id = RequestID;
+
+END$$
+
+-- ================================================
+-- US 6
+-- ================================================
+DELIMITER ;
+DROP PROCEDURE IF EXISTS get_admin_emails;
+DELIMITER $$
+CREATE PROCEDURE get_admin_emails()
+BEGIN
+		SELECT email
+	        FROM personnel_info
+            JOIN role
+            ON personnel_info.role_id = role.id
+	        WHERE role.role_name LIKE '%Administrator%';
+END$$
+DELIMITER ;
+
+DROP procedure IF EXISTS get_upcoming_pickups;
+
+DELIMITER $$
+CREATE PROCEDURE get_upcoming_pickups(IN DAYS_FROM_PICK_UP INT)
+BEGIN
+    SELECT personnel_info.name, email
+	    FROM personnel_info
+        JOIN request
+        ON personnel_info.id = request.customer_id
+        JOIN status
+        ON request.status_id = status.id
+        /* find email when request start date - DAYS_FROM_PICK_UP equals today and the request
+           status is approved */
+	    WHERE SUBDATE(request.start_date, INTERVAL DAYS_FROM_PICK_UP DAY) = CURDATE() 
+		    AND
+		    status.status LIKE '%approved%';
+END$$
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS get_upcoming_returns;
+DELIMITER $$
+CREATE PROCEDURE get_upcoming_returns(IN DAYS_FROM_RETURN INT)
+BEGIN
+		SELECT personnel_info.name, email
+	        FROM personnel_info
+            JOIN request
+            ON personnel_info.id = request.customer_id
+            JOIN status
+            ON request.status_id = status.id
+            /* find requests when request end date - DAYS_FROM_RETURN equals today and the request
+               status is 'picked up' or 'approved' */
+	        WHERE SUBDATE(request.end_date, INTERVAL DAYS_FROM_RETURN DAY) = CURDATE() 
+		        AND
+                (status.status LIKE '%approved%' OR status.status LIKE '%picked_up%');
+END$$
+DELIMITER ;
+
+-- ================================================
+-- US 7
+-- ================================================
+DELIMITER ;
+DROP PROCEDURE IF EXISTS approve_request;
+DELIMITER $$
+CREATE PROCEDURE approve_request(IN `RequestId` INT)
+BEGIN
+-- This procedure approves given request
+
+UPDATE request set status_id=2 WHERE request.id = RequestId;
+
+END$$
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS get_new_requests;
+DELIMITER $$
+CREATE PROCEDURE get_requests() READS SQL DATA
+BEGIN
+	-- This procedure returns list of gear requests which is in 'Requested' and 'Approved' status
+	SELECT rq.id request_id, rq.start_date, rq.end_date , cr.`name` requester, st.`status`
+		FROM request rq
+        JOIN `status` st ON rq.status_id = st.id
+        JOIN personnel_info cr ON rq.customer_id = cr.id
+        WHERE st.id IN (1,2);
+        
+END$$
+
+-- ================================================
+-- US 8
+-- ================================================   
+DELIMITER ;
+DROP PROCEDURE IF EXISTS RequestsDueForReturn;
+DELIMITER $$
+CREATE PROCEDURE RequestsDueForReturn() READS SQL DATA
+	SELECT rq.id request_id, rq.end_date due_date, st.`status`, cr.`name` borrower, cr.email, 
+			gr.gender, sz.size, gi.`name`, ri.quantity
+		FROM request rq
+        JOIN `status` st ON rq.status_id = st.id
+        JOIN personnel_info cr ON rq.customer_id = cr.id
+        JOIN reserved_item ri ON rq.id = ri.request_id
+        JOIN gear_item gi ON ri.item_id = gi.id
+        JOIN size sz ON gi.size_id = sz.id JOIN gender gr on gi.gender_id = gr.id
+        WHERE st.id = 3;
+        
+DELIMITER ;        
+DROP PROCEDURE IF EXISTS SetRequestStatus;
+DELIMITER $$
+CREATE PROCEDURE SetRequestStatus(IN `RequestId` INT, IN `Status` INT)
+	UPDATE request set status_id=`Status` WHERE request.id = RequestId;
+DELIMITER ;        
+DROP PROCEDURE IF EXISTS MarkRequestReturned;
+CREATE PROCEDURE MarkRequestReturned(IN `RequestId` INT)
+	UPDATE request set status_id=4 WHERE request.id = RequestId;
+DELIMITER $$
+DELIMITER ;            
+DROP PROCEDURE IF EXISTS ViewRequestDetail;
+CREATE PROCEDURE ViewRequestDetail(IN `RequestId` INT) READS SQL DATA
+	SELECT rq.id request_id, rq.end_date due_date, st.`status`, cr.`name` borrower, cr.email, 
+			gr.gender, sz.size, gi.`name`, ri.quantity
+		FROM request rq
+        JOIN `status` st ON rq.status_id = st.id
+        JOIN personnel_info cr ON rq.customer_id = cr.id
+        JOIN reserved_item ri ON rq.id = ri.request_id
+        JOIN gear_item gi ON ri.item_id = gi.id
+        JOIN size sz ON gi.size_id = sz.id JOIN gender gr on gi.gender_id = gr.id
+        WHERE rq.id = RequestId;
+DELIMITER $$
+
+-- ================================================
+-- US 10
+-- ================================================
+DELIMITER ;            
+DROP PROCEDURE IF EXISTS RequestHistoryByTripLeader;
+CREATE PROCEDURE RequestHistoryByTripLeader(IN `TripLeader` VARCHAR(50)) READS SQL DATA
+	SELECT DISTINCT pi.name, gi.name, r.start_date, r.end_date, gi.total_quantity, s.status, gi.care_maintenance
+	FROM personnel_info pi
+	JOIN role c ON c.id = 1
+	JOIN request r ON r.customer_id = pi.id
+	JOIN reserved_item ri ON ri.request_id = r.id
+	JOIN gear_item gi ON gi.id = ri.item_id
+	JOIN status s ON r.status_id = s.id
+	WHERE (pi.name = TripLeader AND r.end_date > CURDATE())
+    GROUP BY (r.end_date);
+DELIMITER $$
+    
+DELIMITER ;            
+DROP PROCEDURE IF EXISTS RequestHistoryDate;
+CREATE PROCEDURE RequestHistoryByDate(IN `start_date` DATE, IN `end_date` DATE) READS SQL DATA
+	SELECT DISTINCT pi.name, gi.name, r.start_date, r.end_date, gi.total_quantity, s.status, gi.care_maintenance
+	FROM personnel_info pi
+	JOIN role c ON c.id = 1
+	JOIN request r ON r.customer_id = pi.id
+	JOIN reserved_item ri ON ri.request_id = r.id
+	JOIN gear_item gi ON gi.id = ri.item_id
+	JOIN status s ON r.status_id = s.id
+	WHERE (r.start_date >= start_date AND r.end_date <= end_date)
+    GROUP BY (r.end_date);
+DELIMITER $$
+
+-- ================================================
+-- US 11
+-- ================================================
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS gear_request_trend;
+DELIMITER $$
+CREATE PROCEDURE gear_request_trend(IN ReportYear INT)
+BEGIN
+-- This procedure gets report of gear request trend across given year
+
+SELECT
+    trend.name,  
+    SUM(CASE WHEN (trend.month='January') THEN trend.quantity ELSE 0 END) AS January,
+    SUM(CASE WHEN (trend.month='February') THEN trend.quantity ELSE 0 END) AS February,
+    SUM(CASE WHEN (trend.month='March') THEN trend.quantity ELSE 0 END) AS March,
+    SUM(CASE WHEN (trend.month='April') THEN trend.quantity ELSE 0 END) AS April,
+    SUM(CASE WHEN (trend.month='May') THEN trend.quantity ELSE 0 END) AS May,
+    SUM(CASE WHEN (trend.month='June') THEN trend.quantity ELSE 0 END) AS June,
+    SUM(CASE WHEN (trend.month='July') THEN trend.quantity ELSE 0 END) AS July,
+    SUM(CASE WHEN (trend.month='August') THEN trend.quantity ELSE 0 END) AS August,
+    SUM(CASE WHEN (trend.month='September') THEN trend.quantity ELSE 0 END) AS September,
+    SUM(CASE WHEN (trend.month='October') THEN trend.quantity ELSE 0 END) AS October,
+    SUM(CASE WHEN (trend.month='November') THEN trend.quantity ELSE 0 END) AS November,
+    SUM(CASE WHEN (trend.month='December') THEN trend.quantity ELSE 0 END) AS December
+FROM 
+    (SELECT gear_item.name AS name,
+	MONTHNAME(request.start_date) AS month,
+	sum(reserved_item.quantity) AS quantity
+	FROM reserved_item 
+    LEFT JOIN gear_item ON reserved_item.item_id=gear_item.id
+	INNER JOIN request
+	ON reserved_item.request_id=request.id
+	WHERE YEAR(request.start_date) = ReportYear OR YEAR(request.end_date) = ReportYear 
+	GROUP BY gear_item.name, MONTHNAME(request.start_date)) 
+AS trend
+GROUP BY trend.name;
+
+END$$
 

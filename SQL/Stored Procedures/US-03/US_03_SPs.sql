@@ -10,7 +10,7 @@ BEGIN
 SET @gears := (SELECT JSON_EXTRACT(JSON_data, '$.gears'));
 
 -- Check to see if gears are STILL available. Aditional validation.
-IF (check_gear_availability(@gears, StartDate, EndDate)) THEN
+ IF (check_gear_availability(@gears, StartDate, EndDate)) THEN
 
 	-- Create request in request table
 	select id into @status_id from status 
@@ -20,7 +20,7 @@ IF (check_gear_availability(@gears, StartDate, EndDate)) THEN
 
 	-- Reserve the gear for the request
 	CALL reserve_gear(@gears, @request_id);
-END IF;
+ END IF;
 END$$
 DELIMITER ;
 DROP PROCEDURE IF EXISTS reserve_gear;
@@ -68,7 +68,7 @@ BEGIN
     );
     
 		INSERT INTO Gears_available			
-			SELECT  Inventory.id, Inventory.name, 
+			SELECT  Inventory.id,
             IFNULL(Inventory.total_quantity - SUM(ReservedGears.quantity), Inventory.total_quantity) as QuantityAvailable     
         FROM ( 
             SELECT a.id as GearID, SUM(b.quantity) as quantity
@@ -87,7 +87,7 @@ BEGIN
             ON Inventory.id = ReservedGears.GearID
         JOIN size
             ON size.id = Inventory.size_id
-        GROUP BY Inventory.id, Inventory.name, size.size;
+        GROUP BY Inventory.id;
 
   -- Looping through gears and inserted them in the reserved_item table
   label1 : LOOP
@@ -120,3 +120,9 @@ SET @data_json = '{
 		
 	]
 }';
+
+
+set @startDate = '2016-01-01';
+SET @endDate = '2016-02-02';
+
+CALL create_request(@startDate, @endDate, @data_json, '1');

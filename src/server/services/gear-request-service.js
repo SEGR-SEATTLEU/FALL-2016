@@ -13,7 +13,6 @@ function Request() {
                     console.log(err);
                     throw err;
                 } else {
-                    console.log(result);
                     res.send(result);
                 }
             });
@@ -32,7 +31,6 @@ function Request() {
                     res.send(false);
                     throw err;
                 } else {
-                    console.log(result);
                     res.send(true);
                 }
             });    

@@ -6,7 +6,7 @@
       <h1>{{vm.headerText}}</h1>
     </div>
   </div>
-  <div ng-if="!vm.requestSuccessful" class="row">
+  <div ng-if="!vm.requestSuccessful && vm.needToCheckout" class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label for="pickUpDate">Pickup Date</label>
@@ -34,7 +34,15 @@
     </div>
   </div>
 
-  
+  <div ng-if="!vm.needToCheckout" class="row">
+    <div class="col-md-3">
+      <label for="pickUpDate">Pickup Date: </label> {{vm.startDate.toISOString().substring(0,10)}}
+    </div>
+    <div class="col-md-3">
+      <label for="pickUpDate">Return Date: </label> {{vm.endDate.toISOString().substring(0,10)}}
+    </div>
+  </div>
+
   <div ng-if="vm.gears.length > 0 && !vm.requestSuccessful">
     <div class="row">
       <div class="col-md-12">

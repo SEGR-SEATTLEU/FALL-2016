@@ -51,15 +51,19 @@ BEGIN
 				INSERT INTO temp VALUES(temp_date, total_quantity-reserved_quantity);
                 SET temp_date = DATE_ADD(temp_date, INTERVAL 1 DAY);
                 
+                
+                
 			END WHILE;
             INSERT INTO output VALUES
-				(item_id, item_name, size, IFNULL((SELECT MIN(availability) FROM temp), total_quantity));
+				(item_id, item_name, size,IFNULL((SELECT MIN(availability) FROM temp), total_quantity));
 
 	END LOOP item_loop;
     CLOSE item_cur;
 	
 	/*Item Name and their available quantity for the given date range*/
-    SELECT id, name, size, availability AS QuantityAvailable FROM output WHERE availability <> 0;
+    SELECT output.id, output.name, size.size, output.availability AS QuantityAvailable FROM output
+    JOIN gear_item on gear_item.id = output.id
+    JOIN size on size.id = gear_item.size_id WHERE availability <> 0;
 
 	DROP TABLE output;
     DROP TABLE temp;

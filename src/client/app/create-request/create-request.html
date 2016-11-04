@@ -64,7 +64,7 @@
               <td>{{gear.QuantityAvailable}}</td>
               <td>
                 <input class="quantityInput" type="number" min= "0" ng-model="gear.quantity" ng-change="vm.validate($index)"/>
-                <span id="validator" class="label label-danger"  ng-show="gear.quantity > {{gear.QuantityAvailable}}">Quantity too large!</span>
+                <span class="label label-danger validator"  ng-show="gear.quantity > {{gear.QuantityAvailable}}">Quantity too large!</span>
               </td>
             </tr>
           </tbody>

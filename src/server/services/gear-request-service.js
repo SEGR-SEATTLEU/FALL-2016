@@ -18,13 +18,13 @@ function Request() {
             });
         });
     };
-
-    // Creating Request and reserving the gears for the request.
+ 
+    // Creating Request and reserving the gears for the request. .replace("'", "\\'")
     // pre: request params include startdate, enddate, JSON containing gears, UserID.
     // post: error is logged if request is not created successfully.
     this.post = function (req, res) {
         connection.acquire(function (err, con) {
-            con.query('CALL create_request(\'' + req.startdate + '\',\'' + req.enddate + '\',\'' + JSON.stringify(req) + '\',1);', req, function (err, result) {
+            con.query('CALL create_request(\'' + req.startdate + '\',\'' + req.enddate + '\',\'' + JSON.stringify(req).replace(/'/g, "\\'") + '\',1);', req, function (err, result) {
                 con.release();    
                 if (err) {
                     console.log(err);

@@ -6,7 +6,6 @@ var gearReturnsController = require('./controllers/returns-controller');
 var gearRequestController = require('./controllers/gear-request-controller');
 var gearController = require('./controllers/gear-controller');
 var notifyService = require('./services/notify-service');
-var helloWorldController = require('./controllers/hello-world-controller');
 var moreGearDetailsController = require('./controllers/more-gear-details-controller');
 var gearApproveController = require('./controllers/gear-approve-controller');
 var gearTrendController = require('./controllers/gear-trend-controller');
@@ -28,7 +27,6 @@ app.all('*', function(req, res, next) {
 
 connection.init();
 gearRequestController.configure(app);
-helloWorldController.configure(app);
 gearReturnsController.configure(app);
 gearController.configure(app);
 gearApproveController.configure(app);

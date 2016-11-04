@@ -1,0 +1,37 @@
+<header></header>
+
+<div class="general-padding">
+  <div class="row">
+    <div class="col-md-3">
+      <h1>{{vm.headerText}}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <label for="startDate">Start Date</label>
+      <div id="startDate">{{vm.startDate}}</div>
+    </div>
+    <div class="col-md-3">
+      <label for="startDate">End Date</label>
+      <div id="startDate">{{vm.endDate}}</div>
+    </div>
+  </div>
+  <div class="row">  
+    <div class="col-md-12">
+      <table id="gear_request_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Gear Type</th>
+            <th>Quantity Requested</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="requestDetail in vm.requestDetails track by $index">
+            <td>{{requestDetail.name}}</td>
+            <td>{{requestDetail.quantity}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -2,8 +2,8 @@ var moreGearDetailsService = require('../services/more-gear-details-service.js')
 
 module.exports = {
     configure: function (app) {  
-        app.get('/more-details', function (req, res) {
-          moreGearDetailsService.moredetails(req, res);
+        app.get('/moredetails/:id', function (req, res) {
+          moreGearDetailsService.get(req.params.id, res);
         });
     }
 };

@@ -11,8 +11,24 @@
     var vm = this;
 
     var date = new Date();
-    vm.startDate = date.toISOString().substring(0, date.toISOString().indexOf('T'));
-    vm.endDate = '';
+    vm.startDate = date;
+    vm.endDate = date;
+
+    vm.altInputFormats = ['M!/d!/yyyy'];
+
+    vm.startDatePopup = {
+      opened: false
+    };
+
+    vm.endDatePopup = {
+      opened: false
+    };
+
+    vm.dateOptions = {
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1
+    };
 
     vm.gears = [];
     vm.initialGears = [];
@@ -26,6 +42,9 @@
     vm.createRequest = createRequest;
     vm.goBack = goBack;
     vm.validate = validate;
+    vm.openStartPicker = openStartPicker;
+    vm.openEndPicker = openEndPicker;
+    vm.validDates = validDates;
 
     activate();
     
@@ -33,18 +52,6 @@
 
     function activate() {
       logger.info("Activated Create Request");
-
-      $('#returnDatePicker').datetimepicker({
-          useCurrent: false, //Important! See issue #1075
-          format: 'MM/DD/YYYY'
-      });
-      $("#pickupDatePicker").on("dp.change", function (e) {
-          $('#returnDatePicker').data("DateTimePicker").minDate(e.date);
-      });
-      $("#returnDatePicker").on("dp.change", function (e) {
-          $('#pickupDatePicker').data("DateTimePicker").maxDate(e.date);
-      });
-
     }
 
     function findAvailableGear() {
@@ -109,7 +116,6 @@
         $('#proceedToCheckout').attr('disabled', false);
 
     }
-      
 
     function proceedToCheckout() {
       $('#gear_request_table input').attr('readonly', 'readonly');
@@ -121,6 +127,18 @@
       vm.needToCheckout = false;
       vm.headerText = 'Request Summary';
       $('#validator').hide();
+    }
+
+    function openStartPicker() {
+      vm.startDatePopup.opened = !vm.startDatePopup.opened;
+    }
+
+    function openEndPicker() {
+      vm.endDatePopup.opened = !vm.endDatePopup.opened;
+    }
+
+    function validDates() {
+      return vm.startDate <= vm.endDate;
     }
   }
 })();

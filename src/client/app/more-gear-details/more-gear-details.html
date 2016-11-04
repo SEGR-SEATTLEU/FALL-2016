@@ -1,40 +1,24 @@
 <header></header>
 
 <body>
-  
     <div class="container-fluid">
-        <h1>{{vm.headerText}}</h1>
-        <h2 ng-repeat="item in vm.gearItem">{{item.name}}</h2>
-    </div>
-
-
-    <div>
-        <div class="row">
-            <div class="col-md-12">
-                <table id="gear_request_table" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Description</th>
-                        <th>Care Instructions</th>
-                        <th>Size Table</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in vm.gearItem">
-                        <td><img class="img-responsive" src="{{item.image_url}}" class="img-thumbnail" alt="Men's Fleece'" width="304" height="236"></td>
-                        <td>{{item.description}}</td>
-                        <td>{{item.care_maintenance}}</td>
-                        <td><img class="img-responsive" src="{{item.sizing_table}}" class="img-thumbnail" alt="Men's Fleece Sizing Table'"></td> 
-                    </tr>
-                </tbody>
-                </table>
-
+        <div class="im-centered">
+            <div class="row" ng-repeat="item in vm.gearItem" class="col-md-6">
+                <div class="col-md-3"><h1 ng-repeat="item in vm.gearItem">{{item.name}}:</h1><img class="img-responsive" src="{{item.image_url}}" class="img-thumbnail" alt="Men's Fleece'" width="304" height="236"></div>
+                <div class="col-md-3"><h3 ng-repeat="item in vm.gearItem">{{item.name}} Brand and Model Name</h3> {{item.description}}</div>
             </div>
         </div>
-
-                        <!-- Add Go Back button
-                        -->
+        <div class="im-centered">
+            <div class="row" ng-repeat="item in vm.gearItem" class="col-md-6">
+                <div class="col-md-3"><h3>Care and Maintenance</h3> {{item.care_maintenance}}</div>
+                <div class="col-md-3"><h3>Sizing</h3> <img class="img-responsive" src="{{item.sizing_table}}" class="img-thumbnail" alt="Men's Fleece Sizing Table'"></div>
+            </div>
+        </div>
     </div>
+
+    <div class="row">
+      <button ng-click="vm.backToPreviousPage()" type="submit" class="btn btn-default">Back</button>
+    </div>
+
 
 </body>

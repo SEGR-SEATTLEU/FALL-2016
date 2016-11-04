@@ -55,6 +55,25 @@
       });
     }
 
+/*
+    function getMoreGearDetails() {
+      console.log("The moreGearDetails function has been called successfully");
+      WtaApi.getGearDetails(vm.id).then(function(gearItem) {
+        vm.gearItem = gearItem;
+        return vm.gearItem;
+      });
+
+      $('#gear_request_table input').attr('readonly', 'readonly');
+      vm.initialGears = vm.gears;
+      
+      vm.gears = vm.gears.filter(function(gear) {
+        return gear.quantity !== 0 && gear.quantity !== null && gear.quantity !== undefined;
+      });
+      vm.headerText = 'More Gear Details';
+      $('#validator').hide();
+
+    }
+*/
     function createRequest() {
       var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
       var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));

@@ -8,7 +8,8 @@
       'wta.gear-availability-report',
       'wta.manage-returns',
       'wta.approve-request',
-      'wta.gear-trend'
+      'wta.gear-trend',
+      'wta.view-history-report'
   ])
 
 })();

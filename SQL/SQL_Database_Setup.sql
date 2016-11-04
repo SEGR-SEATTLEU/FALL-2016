@@ -378,9 +378,10 @@ BEGIN
     CLOSE item_cur;
 	
 	/*Item Name and their available quantity for the given date range*/
-    SELECT output.id, output.name, size.size, output.availability AS QuantityAvailable FROM output
+    SELECT output.id, output.name, size.size, gender.gender, output.availability AS QuantityAvailable FROM output
     JOIN gear_item on gear_item.id = output.id
-    JOIN size on size.id = gear_item.size_id WHERE availability <> 0;
+    JOIN size on size.id = gear_item.size_id 
+    JOIN gender on gear_item.size_id = gender.id WHERE availability <> 0;
 
 	DROP TABLE output;
     DROP TABLE temp;

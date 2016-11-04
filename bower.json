@@ -13,6 +13,6 @@
     "jquery": "^2.2.2",
     "bootstrap": "^3.3.6",
     "font-awesome": "^4.5.0",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.43"
+    "angular-bootstrap": "^2.2.0"
   }
 }

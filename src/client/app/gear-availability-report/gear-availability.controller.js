@@ -15,12 +15,20 @@
     vm.startDate = date;
     vm.endDate = date;
 
+    vm.altInputFormats = ['M!/d!/yyyy'];
+
     vm.startDatePopup = {
       opened: false
     };
 
     vm.endDatePopup = {
       opened: false
+    };
+
+    vm.dateOptions = {
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1
     };
 
     vm.gears = [];

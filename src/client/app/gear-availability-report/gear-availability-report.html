@@ -1,0 +1,60 @@
+<header></header>
+
+<div class="general-padding">
+  <div class="row">
+    <div class="col-md-3">
+      <h1>{{vm.headerText}}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="pickUpDate">Start Date</label>
+        <div class="input-group date" ng-model="vm.startDate" id="pickupDatePicker" date-picker>
+          <input type="text" ng-model="vm.startDate" class="form-control" id="pickUpDate" date-picker-input>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="returnDate">End Date</label>
+        <div class="input-group date" ng-model="vm.endDate" id="returnDatePicker" date-picker>
+          <input type="text" ng-model="vm.endDate" class="form-control" id="returnDate" date-picker-input>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <button ng-click="vm.findAvailableGear()" class="btn btn-default" type="submit">Search</button>
+    </div>
+  </div>
+
+  
+  <div ng-if="vm.gears.length > 0 && !vm.requestSuccessful">
+    <div class="row">
+      <div class="col-md-12">
+        <table id="gear_request_table" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Gear Type</th>
+              <th>Size</th>
+              <th>Quantity Available</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="gear in vm.gears track by $index">
+              <td><a ui-sref="moreGearDetails">{{gear.name}}</a></td>
+              <td>{{gear.size}}</td>
+              <td>{{gear.QuantityAvailable}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

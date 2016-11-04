@@ -393,10 +393,13 @@ END$$
 -- ================================================
 -- US 2
 -- ================================================
+DELIMITER ;
 DROP PROCEDURE IF EXISTS GetMoreGearDetails;
+DELIMITER $$
 CREATE PROCEDURE GetMoreGearDetails(IN `GearId` INT)
+BEGIN
 	SELECT id, `name`, image_url, care_maintenance, sizing_table, description FROM gear_item WHERE gear_item.id = GearId;
-    
+END$$
 -- ================================================
 -- US 3
 -- ================================================

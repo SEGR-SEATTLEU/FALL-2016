@@ -13,7 +13,6 @@
     var service = {
       createRequest : createRequest,
       getAvailableGear: getAvailableGear,
-      findAllGear: findAllGear,
       getRequestSummary: getRequestSummary,
       getReturns: getReturns,
       confirmReturn: confirmReturn,
@@ -60,21 +59,6 @@
 
       function getAvailableGearFailed(error) {
         logger.error('XHR Failed for GET AvailableGear ' + error.data);
-      }
-    }
-
-    function findAllGear() {
-      var findAllGearUrl = baseUrl + '/gear_inventory/';
-      return $http.get(findAllGearUrl)
-        .then(findAllGearComplete)
-        .catch(findAllGearFailed);
-
-      function findAllGearComplete(response) {
-        return response.data[0];
-      }
-
-      function findAllGearFailed(error) {
-        logger.error('XHR Failed for GET AllGear ' + error.data);
       }
     }
 

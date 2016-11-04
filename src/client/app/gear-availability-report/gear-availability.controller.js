@@ -12,29 +12,42 @@
     var vm = this;
 
     var date = new Date();
-    vm.startDate = date.toISOString().substring(0, date.toISOString().indexOf('T'));
-    vm.endDate = '';
+    vm.startDate = date;
+    vm.endDate = date;
+
+    vm.startDatePopup = {
+      opened: false
+    };
+
+    vm.endDatePopup = {
+      opened: false
+    };
+
     vm.gears = [];
     vm.headerText = 'Gear Availability Report';
 
     vm.findAvailableGear = findAvailableGear;
+    vm.openStartPicker = openStartPicker;
+    vm.openEndPicker = openEndPicker;
+    vm.validDates = validDates;
     activate();
     
     /////////////////////
 
     function activate() {
       logger.info("Activated Create Request");
+    }
 
-      $('#returnDatePicker').datetimepicker({
-          useCurrent: false, //Important! See issue #1075
-          format: 'MM/DD/YYYY'
-      });
-      $("#pickupDatePicker").on("dp.change", function (e) {
-          $('#returnDatePicker').data("DateTimePicker").minDate(e.date);
-      });
-      $("#returnDatePicker").on("dp.change", function (e) {
-          $('#pickupDatePicker').data("DateTimePicker").maxDate(e.date);
-      });
+    function openStartPicker() {
+      vm.startDatePopup.opened = !vm.startDatePopup.opened;
+    }
+
+    function openEndPicker() {
+      vm.endDatePopup.opened = !vm.endDatePopup.opened;
+    }
+
+    function validDates() {
+      return vm.startDate <= vm.endDate;
     }
 
     function findAvailableGear() {

@@ -10,36 +10,36 @@
     <div class="col-md-3">
       <div class="form-group">
         <label for="pickUpDate">Pickup Date</label>
-        <div class="input-group date" ng-model="vm.startDate" id="pickupDatePicker" date-picker>
-          <input type="text" ng-model="vm.startDate" class="form-control" id="pickUpDate" date-picker-input>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.startDate" is-open="vm.startDatePopup.opened" datepicker-options="vm.dateOptions" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats" id="pickupDate"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="vm.openStartPicker()"><i class="glyphicon glyphicon-calendar"></i></button>
           </span>
-        </div>
+        </p>
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
         <label for="returnDate">Return Date</label>
-        <div class="input-group date" ng-model="vm.endDate" id="returnDatePicker" date-picker>
-          <input type="text" ng-model="vm.endDate" class="form-control" id="returnDate" date-picker-input>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.endDate" is-open="vm.endDatePopup.opened" datepicker-options="vm.dateOptions" ng-required="true" close-text="Close" alt-input-formats="vm.altInputFormats" id="returnDate" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="vm.openEndPicker()"><i class="glyphicon glyphicon-calendar"></i></button>
           </span>
-        </div>
+        </p>
       </div>
     </div>
     <div class="col-md-3">
-      <button ng-click="vm.findAvailableGear()" class="btn btn-default" type="submit">Search</button>
+      <button ng-click="vm.findAvailableGear()" class="btn btn-default" type="submit" ng-disabled="!vm.validDates()">Search</button>
     </div>
   </div>
 
   <div ng-if="!vm.needToCheckout" class="row">
     <div class="col-md-3">
-      <label for="pickUpDate">Pickup Date: </label> {{vm.startDate.toISOString().substring(0,10)}}
+      <label>Pickup Date: </label> {{vm.startDate.toISOString().substring(0,10)}}
     </div>
     <div class="col-md-3">
-      <label for="pickUpDate">Return Date: </label> {{vm.endDate.toISOString().substring(0,10)}}
+      <label>Return Date: </label> {{vm.endDate.toISOString().substring(0,10)}}
     </div>
   </div>
 

@@ -18,13 +18,14 @@
       confirmReturn: confirmReturn,
       getGearRequests: getGearRequests,
       approveRequest: approveRequest,
-      getGearTrend: getGearTrend
+      getGearTrend: getGearTrend,
+      getGearDetails: getGearDetails
 
     }
     return service;
     
     /////////////////////
-    
+
     function createRequest(startDate, endDate, gears) {
       var createRequestUrl = baseUrl + '/request/';
       var gearRequest = {
@@ -154,6 +155,21 @@
           logger.error('XHR Failed for POST GearTrend '+error.data);
       }
     }
+
+    function getGearDetails(gearId) {
+      var getGearDetailsUrl = baseUrl + '/moredetails/'+gearId;
+      return $http.get(getGearDetailsUrl)
+        .then(getGearDetailsComplete)
+        .catch(getGearDetailsFailed);
+
+      function getGearDetailsComplete(response) {
+        return response.data[0];
+      }
+
+      function getGearDetailsFailed(error) {
+        logger.error('XHR Failed for GET Gear Details ' + error.data);
+      }
+    }    
     
   }
   

@@ -11,7 +11,6 @@ function Gear() {
                     console.log(err);
                     throw err;
                 } else {
-                    console.log(result);
                     res.send(result);
                 }
             });

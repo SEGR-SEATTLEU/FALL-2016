@@ -18,7 +18,6 @@
     vm.headerText = 'Gear Availability Report';
 
     vm.findAvailableGear = findAvailableGear;
-
     activate();
     
     /////////////////////
@@ -39,6 +38,7 @@
     }
 
     function findAvailableGear() {
+      console.log("The findAvailableGear function has been called successfully");
       var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
       var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
       WtaApi.getAvailableGear(startDate, endDate).then(function(gears) {

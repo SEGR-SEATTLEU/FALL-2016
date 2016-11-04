@@ -651,7 +651,7 @@ CREATE PROCEDURE RequestHistoryByTripLeader(IN `TripLeader` VARCHAR(50)) READS S
 	JOIN reserved_item ri ON ri.request_id = r.id
 	JOIN gear_item gi ON gi.id = ri.item_id
 	JOIN status s ON r.status_id = s.id
-	WHERE (pi.name = TripLeader AND r.end_date > CURDATE())
+	WHERE (pi.name = TripLeader AND r.end_date < CURDATE())
     GROUP BY (r.end_date);
 DELIMITER $$
     

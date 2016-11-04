@@ -62,6 +62,7 @@
             <tr>
               <th>Gear Type</th>
               <th>Size</th>
+              <th>Gender</th>
               <th>Quantity Requested</th>
             </tr>
           </thead>
@@ -69,6 +70,7 @@
             <tr ng-repeat="requestDetail in vm.requestDetails track by $index">
               <td>{{requestDetail.name}}</td>
               <td>{{requestDetail.size}}</td>
+              <td>{{requestDetail.gender}}</td>
               <td>{{requestDetail.quantity}}</td>
             </tr>
           </tbody>

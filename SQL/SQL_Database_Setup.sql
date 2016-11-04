@@ -212,7 +212,7 @@ INSERT INTO size VALUES(55, '2 Person');
 INSERT INTO size VALUES(56, '4 Person');
 INSERT INTO size VALUES(57, 'One size fits all');
 
-INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(10, 'Fleece Jacket', 3, 3, 8); /* Youth Med */
+INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity, image_url, care_maintenance, sizing_table, description) VALUES(10, 'Fleece Jacket', 3, 3, 8, 'http://i.imgur.com/1ivJIdt.png', 'Machine Wash', 'http://i.imgur.com/bsya8WW.png', 'The next generation of a Columbia classic, this outdoor staple features a finely tuned fit and a soft-yet-rugged filament-fleece fabrication to keep you warm when temperatures plummet.'); /* Youth Med */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(20, 'Fleece Jacket', 3, 4, 12); /* Youth Lg */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(30, 'Fleece Jacket', 3, 5, 10); /* Youth XL */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(40, 'Fleece Jacket', 5, 2, 3); /* Adult sm */
@@ -317,6 +317,7 @@ use WTA;
 -- US 1 and US 12
 -- ================================================
 DELIMITER $$
+
 DROP PROCEDURE IF EXISTS gear_availability$$
 DROP TABLE IF EXISTS output$$
 DROP TABLE IF EXISTS temp$$
@@ -367,15 +368,20 @@ BEGIN
 				INSERT INTO temp VALUES(temp_date, total_quantity-reserved_quantity);
                 SET temp_date = DATE_ADD(temp_date, INTERVAL 1 DAY);
                 
+                
+                
 			END WHILE;
             INSERT INTO output VALUES
-				(item_id, item_name, size, IFNULL((SELECT MIN(availability) FROM temp), total_quantity));
+				(item_id, item_name, size,IFNULL((SELECT MIN(availability) FROM temp), total_quantity));
 
 	END LOOP item_loop;
     CLOSE item_cur;
 	
 	/*Item Name and their available quantity for the given date range*/
-    SELECT id, name, size, availability AS QuantityAvailable FROM output WHERE availability <> 0;
+    SELECT output.id, output.name, size.size, gender.gender, output.availability AS QuantityAvailable FROM output
+    JOIN gear_item on gear_item.id = output.id
+    JOIN size on size.id = gear_item.size_id 
+    JOIN gender on gear_item.size_id = gender.id WHERE availability <> 0;
 
 	DROP TABLE output;
     DROP TABLE temp;
@@ -384,13 +390,17 @@ BEGIN
 END$$
 
 
+
 -- ================================================
 -- US 2
 -- ================================================
+DELIMITER ;
 DROP PROCEDURE IF EXISTS GetMoreGearDetails;
+DELIMITER $$
 CREATE PROCEDURE GetMoreGearDetails(IN `GearId` INT)
+BEGIN
 	SELECT id, `name`, image_url, care_maintenance, sizing_table, description FROM gear_item WHERE gear_item.id = GearId;
-    
+END$$
 -- ================================================
 -- US 3
 -- ================================================

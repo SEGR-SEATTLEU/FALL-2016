@@ -61,17 +61,22 @@
           <thead>
             <tr>
               <th>Gear Type</th>
+              <th>Size</th>
+              <th>Gender</th>
               <th>Quantity Requested</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="requestDetail in vm.requestDetails track by $index">
               <td>{{requestDetail.name}}</td>
+              <td>{{requestDetail.size}}</td>
+              <td>{{requestDetail.gender}}</td>
               <td>{{requestDetail.quantity}}</td>
             </tr>
           </tbody>
         </table>
         <button ng-if="vm.status=='requested'" ng-click="vm.approveRequest()" type="submit" class="btn btn-default">Approve</button>
+        <button ng-click="vm.activate()" type="submit" class="btn btn-default">Go Back</button>
       </div>
     </div>
   </div>

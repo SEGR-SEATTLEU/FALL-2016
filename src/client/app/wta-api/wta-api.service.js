@@ -19,14 +19,18 @@
       getGearRequests: getGearRequests,
       approveRequest: approveRequest,
       getGearTrend: getGearTrend,
+<<<<<<< HEAD
       getHistoryByDate: getHistoryByDate,
       getHistoryByTripLeader: getHistoryByTripLeader
+=======
+      getGearDetails: getGearDetails
+>>>>>>> 0e85f080685919d19630ef6409a7e091717cbaad
 
     }
     return service;
     
     /////////////////////
-    
+
     function createRequest(startDate, endDate, gears) {
       var createRequestUrl = baseUrl + '/request/';
       var gearRequest = {
@@ -157,6 +161,7 @@
       }
     }
 
+<<<<<<< HEAD
     function getHistoryByDate(startDate, endDate) {
       var getHistoryUrl = baseUrl + '/view_history_byDate/';
       getHistoryUrl += '?startdate=' + startDate + '&enddate=' + endDate;
@@ -188,6 +193,22 @@
         logger.error('XHR Failed for GET History by Date ' + error.data);
       }
     }
+=======
+    function getGearDetails(gearId) {
+      var getGearDetailsUrl = baseUrl + '/moredetails/'+gearId;
+      return $http.get(getGearDetailsUrl)
+        .then(getGearDetailsComplete)
+        .catch(getGearDetailsFailed);
+
+      function getGearDetailsComplete(response) {
+        return response.data[0];
+      }
+
+      function getGearDetailsFailed(error) {
+        logger.error('XHR Failed for GET Gear Details ' + error.data);
+      }
+    }    
+>>>>>>> 0e85f080685919d19630ef6409a7e091717cbaad
     
   }
   

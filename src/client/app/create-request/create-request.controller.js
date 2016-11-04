@@ -73,7 +73,7 @@
       vm.gears = vm.initialGears;
       $('#gear_request_table input').attr('readonly', false);
       vm.headerText = 'Available Gear';
-      $('#validator').show();
+      $('.validator').show();
     }
 
     function validate(index) {
@@ -101,7 +101,7 @@
       });
       vm.needToCheckout = false;
       vm.headerText = 'Request Summary';
-      $('#validator').hide();
+      $('.validator').hide();
     }
   }
 })();

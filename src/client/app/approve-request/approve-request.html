@@ -23,8 +23,8 @@
               <td>
                 <a href ng-click="vm.getRequestDetail(request.request_id, request.requester, request.status)">{{request.request_id}}</a>
               </td>
-              <td>{{request.start_date}}</td>
-              <td>{{request.end_date}}</td>
+              <td>{{request.start_date.slice(0,10)}}</td>
+              <td>{{request.end_date.slice(0,10)}}</td>
               <td>{{request.requester}}</td>
               <td>
                 <a href ng-if="request.status=='requested'" ng-click="vm.getRequestDetail(request.request_id, request.requester, request.status)">Action Required</a>

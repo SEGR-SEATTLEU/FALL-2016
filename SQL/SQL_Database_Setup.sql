@@ -212,7 +212,7 @@ INSERT INTO size VALUES(55, '2 Person');
 INSERT INTO size VALUES(56, '4 Person');
 INSERT INTO size VALUES(57, 'One size fits all');
 
-INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity, image_url, care_maintenance, sizing_table, description) VALUES(10, 'Fleece Jacket', 3, 3, 8, 'http://i.imgur.com/1ivJIdt.png', 'Machine Wash', 'http://i.imgur.com/bsya8WW.png', 'The next generation of a Columbia classic, this outdoor staple features a finely tuned fit and a soft-yet-rugged filament-fleece fabrication to keep you warm when temperatures plummet.'); /* Youth Med */
+INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity, image_url, care_maintenance, sizing_table, description) VALUES(10, 'Fleece Jacket', 3, 3, 8, 'http://i.imgur.com/1ivJIdt.png', 'Machine Wash', 'http://i.imgur.com/bsya8WW.png', 'The next generation of a Columbia classic, this outdoor staple features a finely tuned fit and a soft-yet-rugged filament-fleece fabrication to keep you warm when temperatures plummet. Item model number: WM3220 Size: Youth (M), 100% Polyester, Imported, Zipper closure, Machine Wash, Front-zip fleece jacket with standing collar and logo at chest, On-seam zippered side-entry pockets'); /* Youth Med */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(20, 'Fleece Jacket', 3, 4, 12); /* Youth Lg */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(30, 'Fleece Jacket', 3, 5, 10); /* Youth XL */
 INSERT INTO gear_item(id, name, gender_id, size_id, total_quantity) VALUES(40, 'Fleece Jacket', 5, 2, 3); /* Adult sm */

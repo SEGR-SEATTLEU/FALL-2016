@@ -14,10 +14,10 @@
     var date = new Date();
     vm.startDate = date.toISOString().substring(0, date.toISOString().indexOf('T'));
     vm.endDate = '';
-    vm.gears = [];
+    vm.reports = [];
     vm.headerText = 'View History Report';
 
-    vm.findAvailableGear = findAvailableGear;
+    vm.getHistoryReport = getHistoryReport;
 
     activate();
     
@@ -38,11 +38,11 @@
       });
     }
 
-    function findAvailableGear() {
+    function getHistoryReport() {
       var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
       var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
-      WtaApi.getAvailableGear(startDate, endDate).then(function(gears) {
-        vm.gears = gears;
+      WtaApi.getHistoryByDate(startDate, endDate).then(function(gears) {
+        vm.reports = gears;
       });
     }
     

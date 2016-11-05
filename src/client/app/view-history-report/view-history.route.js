@@ -15,7 +15,7 @@
       {
         state: 'viewHistoryReport',
         config: {
-          url: '/view-history-repot',
+          url: '/view-history-report',
           templateUrl: '/src/client/app/view-history-report/view-history-report.html',
           controller: 'ViewHistoryReportController',
           controllerAs: 'vm',

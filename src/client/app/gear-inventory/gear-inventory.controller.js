@@ -10,8 +10,7 @@
   //activate();
   function GearInventoryController(logger, WtaApi) {
     var vm = this;
-    vm.gearid = 
-
+    
     var nTemp = 10;
     vm.gearid = nTemp;
     vm.gearquantity = nTemp;

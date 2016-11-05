@@ -14,6 +14,7 @@
       createRequest : createRequest,
       getAvailableGear: getAvailableGear,
       findAllGear: findAllGear,
+      updateGearQuantity: updateGearQuantity,
       getRequestSummary: getRequestSummary,
       getReturns: getReturns,
       confirmReturn: confirmReturn,
@@ -76,6 +77,25 @@
 
       function findAllGearFailed(error) {
         logger.error('XHR Failed for GET AllGear ' + error.data);
+      }
+    }
+
+    function updateGearQuantity(gearid, gearquantity) {
+      var updateGearQuantityUrl = baseUrl + '/update_gear_quantity/';
+      var gearRequest = {
+        "gearid": gearid,
+        "gearquantity": gearquantity
+      }
+      return $http.post(updateGearQuantityUrl, gearRequest)
+        .then(updateGearQuantityComplete)
+        .catch(updateGearQuantityFailed);
+        
+      function updateGearQuantityComplete(response) {
+          return response.data;
+      }
+      
+      function updateGearQuantityFailed(error) {
+          logger.error('XHR Failed for POST UpdateGearQuantity '+error.data);
       }
     }
 

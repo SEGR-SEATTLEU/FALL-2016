@@ -12,7 +12,7 @@ function Request() {
                     console.log(err);
                     throw err;
                 } else {
-                    console.log(result);
+                    //console.log(result);
                     res.send(result);
                 }
             });
@@ -21,13 +21,14 @@ function Request() {
 
     this.viewByDate = function (req, res) {
         connection.acquire(function (err, con) {
-            con.query('CALL RequestHisotryByTripLeader(\'' + req.query.startdate + '\',\'' + req.query.enddate + '\')', req, function (err, result) {
+            //con.query('CALL RequestHisotryByTripLeader(\'' + req.query.startdate + '\',\'' + req.query.enddate + '\')', req, function (err, result) {
+            con.query('CALL RequestHistoryByDate("2016-11-05"' + ',' + '"2016-11-12")', req, function (err, result) {
                 con.release();
                 if (err) {
                     console.log(err);
                     throw err;
                 } else {
-                    console.log(result);
+                    //console.log(result);
                     res.send(result);
                 }
             });

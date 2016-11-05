@@ -27,7 +27,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="requestDetail in vm.requestDetails track by $index">
-            <td>{{requestDetail.name}}</td>
+            <td><a ui-sref="moreGearDetails({ gearID: {{requestDetail.id}} })">{{requestDetail.name}}</a></td>
             <td>{{requestDetail.quantity}}</td>
           </tr>
         </tbody>

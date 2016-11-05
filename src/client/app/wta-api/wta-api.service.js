@@ -190,7 +190,8 @@
     }
 
     function getHistoryByTripLeader(name) {
-      var getHistoryUrl = baseUrl + '/view_history_byTripLeader/';
+      console.log('In get history by trip leader: ' + name);
+      var getHistoryUrl = baseUrl + '/view_history_byTripLeader';
       getHistoryUrl += '?name=' + name;
       return $http.get(getHistoryUrl)
         .then(getHistoryComplete)

@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('todo.todo')
+    .module('wta.gear-inventory')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
@@ -13,13 +13,13 @@
   function getStates() {
     return [
       {
-        state: 'todo',
+        state: 'gearInventory',
         config: {
-          url: '/todo',
-          templateUrl: '/src/client/app/todo/todo.html',
-          controller: 'TodoController',
+          url: '/gear-inventory',
+          templateUrl: '/src/client/app/gear-inventory/gear-inventory.html',
+          controller: 'GearInventoryController',
           controllerAs: 'vm',
-          title: 'Todo'
+          title: 'Gear Inventory'
         }
       }
     ];

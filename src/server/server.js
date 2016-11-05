@@ -6,7 +6,10 @@ var gearReturnsController = require('./controllers/returns-controller');
 var gearRequestController = require('./controllers/gear-request-controller');
 var gearController = require('./controllers/gear-controller');
 var notifyService = require('./services/notify-service');
-var helloWorldController = require('./controllers/hello-world-controller');
+var moreGearDetailsController = require('./controllers/more-gear-details-controller');
+var gearApproveController = require('./controllers/gear-approve-controller');
+var gearTrendController = require('./controllers/gear-trend-controller');
+var viewHistoryController = require('./controllers/view-history-controller');
 var app = express();
 
 
@@ -25,9 +28,12 @@ app.all('*', function(req, res, next) {
 
 connection.init();
 gearRequestController.configure(app);
-helloWorldController.configure(app);
 gearReturnsController.configure(app);
 gearController.configure(app);
+gearApproveController.configure(app);
+gearTrendController.configure(app);
+moreGearDetailsController.configure(app);
+viewHistoryController.configure(app);
 
 var server = app.listen(8000, function () {
     console.log('Server listening on port ' + server.address().port);

@@ -9,18 +9,15 @@ BEGIN
 
 SET @gears := (SELECT JSON_EXTRACT(JSON_data, '$.gears'));
 
--- Check to see if gears are STILL available. Aditional validation.
-IF (check_gear_availability(@gears, StartDate, EndDate)) THEN
+-- Create request in request table
+select id into @status_id from status 
+where status like '%requested%';
+INSERT INTO request(start_date, end_date,customer_id,status_id) values(StartDate, EndDate, UserID, @status_id);
+SET @request_id := (SELECT last_insert_id()); -- into RequestID;
 
-	-- Create request in request table
-	select id into @status_id from status 
-	where status like '%requested%';
-	INSERT INTO request(start_date, end_date,customer_id,status_id) values(StartDate, EndDate, UserID, @status_id);
-	SET @request_id := (SELECT last_insert_id()); -- into RequestID;
-
-	-- Reserve the gear for the request
-	CALL reserve_gear(@gears, @request_id);
-END IF;
+-- Reserve the gear for the request
+CALL reserve_gear(@gears, @request_id);
+    
 END$$
 DELIMITER ;
 DROP PROCEDURE IF EXISTS reserve_gear;
@@ -68,7 +65,7 @@ BEGIN
     );
     
 		INSERT INTO Gears_available			
-			SELECT  Inventory.id, Inventory.name, 
+			SELECT  Inventory.id,
             IFNULL(Inventory.total_quantity - SUM(ReservedGears.quantity), Inventory.total_quantity) as QuantityAvailable     
         FROM ( 
             SELECT a.id as GearID, SUM(b.quantity) as quantity
@@ -87,7 +84,7 @@ BEGIN
             ON Inventory.id = ReservedGears.GearID
         JOIN size
             ON size.id = Inventory.size_id
-        GROUP BY Inventory.id, Inventory.name, size.size;
+        GROUP BY Inventory.id;
 
   -- Looping through gears and inserted them in the reserved_item table
   label1 : LOOP
@@ -108,15 +105,3 @@ BEGIN
   RETURN TRUE;
 END$$
 DELIMITER ;
-
-SET @data_json = '{
-	"startdate": "2016-01-09",
-	"enddate": "2016-01-11",
-	"gears" : [
-		{
-			"id": "10",
-			"quantity" : "4"
-		}
-		
-	]
-}';

@@ -16,7 +16,7 @@
         <base href="/">
         
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+        <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css">
         <link rel="stylesheet" href="/src/client/styles/app.css">
 
     </head>
@@ -29,10 +29,10 @@
         <script src="/bower_components/angular/angular.js"></script>
         <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="/bower_components/moment/min/moment.min.js"></script>
-        <script src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
         <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="/bower_components/angular-animate/angular-animate.js"></script>
+        <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
         
         <!-- Core Application JavaScript -->
         <script src="/src/client/app/app.module.js"></script>
@@ -50,7 +50,6 @@
         <!-- WTA Widgets -->
         <script src="/src/client/app/widgets/widgets.module.js"></script>
         <script src="/src/client/app/widgets/header/header.directive.js"></script>
-        <script src="/src/client/app/widgets/date-picker/date-picker.directive.js"></script>
         
         <!-- WTA API Module -->
         <script src="/src/client/app/wta-api/wta-api.module.js"></script>
@@ -70,12 +69,36 @@
         <script src="/src/client/app/gear-availability-report/gear-availability.module.js"></script>
         <script src="/src/client/app/gear-availability-report/gear-availability.route.js"></script>
         <script src="/src/client/app/gear-availability-report/gear-availability.controller.js"></script>
-        
+       
+       <!-- Gear Inventory Module -->
+        <script src="/src/client/app/gear-inventory/gear-inventory.module.js"></script>
+        <script src="/src/client/app/gear-inventory/gear-inventory.route.js"></script>
+        <script src="/src/client/app/gear-inventory/gear-inventory.controller.js"></script>
+       
+        <!-- More Gear Details Module -->
+        <script src="/src/client/app/more-gear-details/more-gear-details.module.js"></script>
+        <script src="/src/client/app/more-gear-details/more-gear-details.route.js"></script>
+        <script src="/src/client/app/more-gear-details/more-gear-details.controller.js"></script>    
+
         <!-- Manage Returns Module -->
         <script src="/src/client/app/manage-returns/manage-returns.module.js"></script>
         <script src="/src/client/app/manage-returns/manage-returns.route.js"></script>
         <script src="/src/client/app/manage-returns/manage-returns.controller.js"></script>
-    
+
+        <!-- View History Report Module -->
+        <script src="/src/client/app/view-history-report/view-history.module.js"></script>
+        <script src="/src/client/app/view-history-report/view-history.route.js"></script>
+        <script src="/src/client/app/view-history-report/view-history.controller.js"></script>
+
+        <!-- Approve Request Module -->
+        <script src="/src/client/app/approve-request/approve-request.module.js"></script>
+        <script src="/src/client/app/approve-request/approve-request.route.js"></script>
+        <script src="/src/client/app/approve-request/approve-request.controller.js"></script>
+
+        <!-- Gear Trend Module -->
+        <script src="/src/client/app/gear-trend/gear-trend.module.js"></script>
+        <script src="/src/client/app/gear-trend/gear-trend.route.js"></script>
+        <script src="/src/client/app/gear-trend/gear-trend.controller.js"></script>
 
     </body>
 </html>

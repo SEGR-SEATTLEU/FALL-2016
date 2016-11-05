@@ -13,14 +13,21 @@
     var service = {
       createRequest : createRequest,
       getAvailableGear: getAvailableGear,
+      findAllGear: findAllGear,
       getRequestSummary: getRequestSummary,
       getReturns: getReturns,
-      confirmReturn: confirmReturn
+      confirmReturn: confirmReturn,
+      getGearRequests: getGearRequests,
+      approveRequest: approveRequest,
+      getGearTrend: getGearTrend,
+      getHistoryByDate: getHistoryByDate,
+      getHistoryByTripLeader: getHistoryByTripLeader,
+      getGearDetails: getGearDetails
     }
     return service;
     
     /////////////////////
-    
+
     function createRequest(startDate, endDate, gears) {
       var createRequestUrl = baseUrl + '/request/';
       var gearRequest = {
@@ -54,6 +61,21 @@
 
       function getAvailableGearFailed(error) {
         logger.error('XHR Failed for GET AvailableGear ' + error.data);
+      }
+    }
+
+    function findAllGear() {
+      var findAllGearUrl = baseUrl + '/gear_inventory/';
+      return $http.get(findAllGearUrl)
+        .then(findAllGearComplete)
+        .catch(findAllGearFailed);
+
+      function findAllGearComplete(response) {
+        return response.data[0];
+      }
+
+      function findAllGearFailed(error) {
+        logger.error('XHR Failed for GET AllGear ' + error.data);
       }
     }
 
@@ -105,6 +127,98 @@
         logger.error('XHR Failed for Get RequestSummary ' + error.data);
       }
     }
+
+    function getGearRequests() {
+      var getGearRequestsUrl = baseUrl + '/get_requests/';
+      return $http.get(getGearRequestsUrl)
+        .then(getGearRequestsComplete)
+        .catch(getGearRequestsFailed);
+
+      function getGearRequestsComplete(response) {
+        return response.data[0];
+      }
+
+      function getGearRequestsFailed(error) {
+        logger.error('XHR Failed for GET GearRequests' + error.data);
+      }
+    }
+
+    function approveRequest(requestId) {
+      var approveRequestUrl = baseUrl + '/approve_request/?requestId='+requestId;
+      return $http.post(approveRequestUrl,"")
+        .then(approveRequestComplete)
+        .catch(approveRequestFailed);
+        
+      function approveRequestComplete(response) {
+          return response.data;
+      }
+      
+      function approveRequestFailed(error) {
+          logger.error('XHR Failed for POST ApproveRequest '+error.data);
+      }
+    }
+
+    function getGearTrend(year) {
+      var gearTrendUrl = baseUrl + '/gear_trend/?trendYear='+year;
+      return $http.get(gearTrendUrl)
+        .then(gearTrendComplete)
+        .catch(gearTrendFailed);
+        
+      function gearTrendComplete(response) {
+          return response.data[0];
+      }
+      
+      function gearTrendFailed(error) {
+          logger.error('XHR Failed for POST GearTrend '+error.data);
+      }
+    }
+
+    function getHistoryByDate(startDate, endDate) {
+      var getHistoryUrl = baseUrl + '/view_history_byDate/';
+      getHistoryUrl += '?startdate=' + startDate + '&enddate=' + endDate;
+      return $http.get(getHistoryUrl)
+        .then(getHistoryComplete)
+        .catch(getHistoryFailed);
+
+      function getHistoryComplete(response) {
+        return response.data[0];
+      }
+
+      function getHistoryFailed(error) {
+        logger.error('XHR Failed for GET History by Date ' + error.data);
+      }
+    }
+
+    function getHistoryByTripLeader(name) {
+      var getHistoryUrl = baseUrl + '/view_history_byTripLeader/';
+      getHistoryUrl += '?name=' + name;
+      return $http.get(getHistoryUrl)
+        .then(getHistoryComplete)
+        .catch(getHistoryFailed);
+
+      function getHistoryComplete(response) {
+        return response.data[0];
+      }
+
+      function getHistoryFailed(error) {
+        logger.error('XHR Failed for GET History by Date ' + error.data);
+      }
+    }
+
+    function getGearDetails(gearId) {
+      var getGearDetailsUrl = baseUrl + '/moredetails/'+gearId;
+      return $http.get(getGearDetailsUrl)
+        .then(getGearDetailsComplete)
+        .catch(getGearDetailsFailed);
+
+      function getGearDetailsComplete(response) {
+        return response.data[0];
+      }
+
+      function getGearDetailsFailed(error) {
+        logger.error('XHR Failed for GET Gear Details ' + error.data);
+      }
+    }    
     
   }
   

@@ -8,34 +8,19 @@
   </div>
   <div class="row">
     <div class="col-md-3">
-      <div class="form-group">
-        <label for="pickUpDate">Start Date</label>
-        <div class="input-group date" ng-model="vm.startDate" id="pickupDatePicker" date-picker>
-          <input type="text" ng-model="vm.startDate" class="form-control" id="pickUpDate" date-picker-input>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </div>
+
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="vm.tripLeader" width="30" />
+          </div>
+
     </div>
     <div class="col-md-3">
-      <div class="form-group">
-        <label for="returnDate">End Date</label>
-        <div class="input-group date" ng-model="vm.endDate" id="returnDatePicker" date-picker>
-          <input type="text" ng-model="vm.endDate" class="form-control" id="returnDate" date-picker-input>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <button ng-click="vm.getHistoryReport()" class="btn btn-default" type="submit">Search</button>
+      <button ng-click="vm.getHistoryReportByTripLeader()" class="btn btn-default" type="submit">Search</button>
     </div>
   </div>
 
   
-  <div ng-if="vm.gears.length > 0 && !vm.requestSuccessful">
+  <div>
     <div class="row">
       <div class="col-md-12">
         <table id="gear_request_table" class="table table-bordered">
@@ -50,13 +35,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="gear in vm.reports track by $index">
-              <td>{{reports.name}}</td>
-              <td>{{reports.startDate}}</td>
-              <td>{{reports.endDate}}</td>
-              <td>{{reports.quntity}}</td>
-              <td>{{reports.status}}</td>
-              <td>{{reports.care_maintenance}}</td>
+            <tr ng-repeat="gearItem in vm.reports track by $index">
+              <td>{{gearItem.name}}</td>
+              <td>{{gearItem.start_date.substring(0,10)}}</td>
+              <td>{{gearItem.end_date.substring(0,10)}}</td>
+              <td>{{gearItem.total_quantity}}</td>
+              <td>{{gearItem.status}}</td>
+              <td>{{gearItem.care_maintenance}}</td>
             </tr>
           </tbody>
         </table>

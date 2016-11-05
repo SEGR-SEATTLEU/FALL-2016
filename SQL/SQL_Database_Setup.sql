@@ -333,6 +333,11 @@ INSERT INTO reserved_item VALUES(32, 9, 180, 3);  -- 1 youth med fleece jacket
 INSERT INTO reserved_item VALUES(33, 9, 510, 1);  -- 1 Men's sm gloves 
 INSERT INTO reserved_item VALUES(34, 9, 120, 1); -- 1 75 liter backpacking pack
 
+INSERT INTO request VALUES(10, 2, '2015-11-04', '2015-11-08', 3); -- Picked up
+INSERT INTO reserved_item VALUES(35, 10, 260, 2); -- 2 men's 10 hiking boots
+INSERT INTO reserved_item VALUES(36, 10, 390, 2); -- 2 women's 8 hiking boots 
+INSERT INTO reserved_item VALUES(37, 10, 650, 2); -- 2 2-person tents 
+INSERT INTO reserved_item VALUES(38, 10, 580, 3); -- 4 50 liter backpacking packs
 
 
 -- ====================================================================================================================================
@@ -678,11 +683,11 @@ CREATE PROCEDURE RequestHistoryByTripLeader(IN `TripLeader` VARCHAR(50)) READS S
 	JOIN gear_item gi ON gi.id = ri.item_id
 	JOIN status s ON r.status_id = s.id
 	WHERE (pi.name = TripLeader AND r.end_date < CURDATE())
-    GROUP BY (r.end_date);
+    ORDER BY (r.end_date);
 DELIMITER $$
     
 DELIMITER ;            
-DROP PROCEDURE IF EXISTS RequestHistoryDate;
+DROP PROCEDURE IF EXISTS RequestHistoryByDate;
 CREATE PROCEDURE RequestHistoryByDate(IN `start_date` DATE, IN `end_date` DATE) READS SQL DATA
 	SELECT DISTINCT pi.name, gi.name, r.start_date, r.end_date, gi.total_quantity, s.status, gi.care_maintenance
 	FROM personnel_info pi
@@ -692,7 +697,7 @@ CREATE PROCEDURE RequestHistoryByDate(IN `start_date` DATE, IN `end_date` DATE) 
 	JOIN gear_item gi ON gi.id = ri.item_id
 	JOIN status s ON r.status_id = s.id
 	WHERE (r.start_date >= start_date AND r.end_date <= end_date)
-    GROUP BY (r.end_date);
+    ORDER BY (r.end_date);
 DELIMITER $$
 
 -- ================================================

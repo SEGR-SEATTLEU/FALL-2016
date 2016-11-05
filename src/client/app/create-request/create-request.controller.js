@@ -36,6 +36,7 @@
     vm.headerText = 'Available Gear:';
     vm.requestSuccessful = false;
     vm.gearsWithValidQuantity = [];
+    vm.isInValidQuantity = false;
 
     vm.findAvailableGear = findAvailableGear;
     vm.proceedToCheckout = proceedToCheckout;
@@ -84,12 +85,20 @@
     }
 
     function invalidRequest(){
+       vm.isInValidQuantity = false;
        vm.gearsWithValidQuantity = vm.gears.filter(function(gear) {
          return gear.quantity !== 0 && gear.quantity !== null && gear.quantity !== undefined;
        });
        if(vm.gearsWithValidQuantity.length == 0){
-         return true;
+         vm.isInValidQuantity = true;
+       }else{
+         vm.gearsWithValidQuantity.forEach(function(element) {
+           if (element.quantity > element.QuantityAvailable) {
+             vm.isInValidQuantity = true;
+           }
+         }, this); 
        }
+       return vm.isInValidQuantity;
      }
 
     function proceedToCheckout() {

@@ -1,7 +1,7 @@
 var connection = require('../config/db-connection');
 
 
-function Gear() {
+function Request() {
 
     this.get = function (req, res) {
         connection.acquire(function (err, con) {
@@ -19,4 +19,4 @@ function Gear() {
 
 }
 
-module.exports = new Gear();
+module.exports = new Request();

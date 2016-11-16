@@ -10,7 +10,7 @@
   //activate();
   function GearInventoryController(logger, WtaApi) {
     var vm = this;
-    
+
     var nTemp = 10;
     vm.gearid = nTemp;
     vm.gearquantity = nTemp;
@@ -39,8 +39,9 @@
       var gearquantity = vm.gearquantity;
       WtaApi.updateGearQuantity(gearid, gearquantity).then(function(res) {
         if( res === true ) {
-          vm.requestSuccessful = true;
-          vm.headerText = 'Gear Quantity Updated!';
+          vm.statustext = 'Gear ID of ' + gearid + ' -> quantity updated to ' + gearquantity + '!';
+          // Refresh data on the page
+          findAllGear();
         } else {
           // error handle
         }

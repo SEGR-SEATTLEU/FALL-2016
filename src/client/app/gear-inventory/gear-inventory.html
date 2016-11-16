@@ -11,7 +11,31 @@
       <button ng-click="vm.findAllGear()" class="btn btn-default" type="submit">Display Inventory</button>
     </div>
   </div>
+  <div class="row">
+    <br/><br/>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="inputGearID">Gear ID</label>
+        <p class="input-group">
+          <input type="text" class="form-control" id="inputGearID" ng-model="vm.gearid"/>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="inputGearQuantity">New Quantity</label>
+        <p class="input-group">
+          <input type="text" class="form-control" id="inputGearQuantity" ng-model="vm.gearquantity"/>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <button ng-click="vm.updateGearQuantity()" class="btn btn-default" type="submit">Update Gear Quantity</button>
+      <h1>{{vm.statustext}}</h1>
+    </div>
+  </div>
 
+  <br/><br/>
   
   <div ng-if="vm.gears.length > 0 && !vm.requestSuccessful">
     <div class="row">
@@ -19,16 +43,18 @@
         <table id="gear_inventory_table" class="table table-bordered">
           <thead>
             <tr>
+              <th>Gear ID</th>
               <th>Gear Type</th>
               <th>Size</th>
-              <th>Quantity Available</th>
+              <th>Total Quantity</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="gear in vm.gears track by $index">
+              <td>{{gear.id}}</td>
               <td><a ui-sref="moreGearDetails({ gearID: {{gear.id}} })">{{gear.name}}</a></td>
               <td>{{gear.size}}</td>
-              <td>{{gear.QuantityAvailable}}</td>
+              <td>{{gear.TotalQuantity}}</td>
             </tr>
           </tbody>
         </table>

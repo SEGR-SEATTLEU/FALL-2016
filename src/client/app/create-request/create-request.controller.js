@@ -35,13 +35,14 @@
     vm.needToCheckout = true;
     vm.headerText = 'Available Gear:';
     vm.requestSuccessful = false;
-    vm.boolCheck = true;
+    vm.gearsWithValidQuantity = [];
+    vm.isInValidQuantity = false;
 
     vm.findAvailableGear = findAvailableGear;
     vm.proceedToCheckout = proceedToCheckout;
     vm.createRequest = createRequest;
     vm.goBack = goBack;
-    vm.validate = validate;
+    vm.invalidRequest = invalidRequest;
     vm.openStartPicker = openStartPicker;
     vm.openEndPicker = openEndPicker;
     vm.validDates = validDates;
@@ -83,20 +84,22 @@
       $('.validator').show();
     }
 
-    function validate(index) {
-      vm.boolCheck = false;
-      vm.gears.forEach(function(element) {
-        if (element.quantity > element.QuantityAvailable) {
-          vm.boolCheck = true;
-        }
-      }, this); 
-
-      if (vm.boolCheck == true)
-        $('#proceedToCheckout').attr('disabled', true);
-      else
-        $('#proceedToCheckout').attr('disabled', false);
-
-    }
+    function invalidRequest(){
+       vm.isInValidQuantity = false;
+       vm.gearsWithValidQuantity = vm.gears.filter(function(gear) {
+         return gear.quantity !== 0 && gear.quantity !== null && gear.quantity !== undefined;
+       });
+       if(vm.gearsWithValidQuantity.length == 0){
+         vm.isInValidQuantity = true;
+       }else{
+         vm.gearsWithValidQuantity.forEach(function(element) {
+           if (element.quantity > element.QuantityAvailable) {
+             vm.isInValidQuantity = true;
+           }
+         }, this); 
+       }
+       return vm.isInValidQuantity;
+     }
 
     function proceedToCheckout() {
       $('#gear_request_table input').attr('readonly', 'readonly');

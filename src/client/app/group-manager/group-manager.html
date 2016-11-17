@@ -36,7 +36,7 @@
       <input type="group" class="form-control" id="newGroupName" ng-model="groupName" placeholder="Enter group name">
       <label for="group">Role:</label>
       <select class="form-control" ng-model="selected"><option ng-repeat="role in vm.roles track by $index" value="{{role.id}}">{{role.role_name}}</option></select>      
-      <button ng-click="vm.createGroup(groupName, selected)" class="btn btn-default" type="submit">Create New Group</button>
+      <button ng-click="vm.createGroup(groupName, selected)" class="btn btn-default" ng-disabled="!selected || !groupName" type="submit">Create New Group</button>
     </div>
   </div>
   </div>
@@ -64,7 +64,7 @@
                     </select>
                   </div>
                   <div style="float: right" class="btn-group">
-                    <button ng-click="vm.moveUser(selected, groupMember.UserID, groupMember.group_id)" class="btn btn-default" type="submit">Move</button>
+                    <button ng-click="vm.moveUser(selected, groupMember.UserID, groupMember.group_id)" ng-disabled="!selected" class="btn btn-default" type="submit">Move</button>
                   <div>
                 </td>
               </tr>

@@ -55,6 +55,19 @@ CREATE TABLE gear_item (
 );
 
 
+
+-- -----------------------------------------------------
+-- Table `wta`.`group`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS groups;
+CREATE TABLE groups (
+  id INT NOT NULL AUTO_INCREMENT,
+  role_id INT NOT NULL,
+  group_name VARCHAR(250),
+  PRIMARY KEY(id),
+  CONSTRAINT fk_role_id FOREIGN KEY (role_id) REFERENCES `role`(id)
+);
+
 -- -----------------------------------------------------
 -- Table `wta`.`role`
 -- -----------------------------------------------------
@@ -72,7 +85,7 @@ DROP TABLE IF EXISTS personnel_info;
 CREATE TABLE personnel_info (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(1000) NOT NULL,
-  role_id INT NOT NULL,
+  groups_id INT NOT NULL,
   email VARCHAR(1000),
   phone_number VARCHAR(1000),
   address_line_1 VARCHAR(1000),
@@ -82,7 +95,7 @@ CREATE TABLE personnel_info (
   state VARCHAR(2),
   zip_code VARCHAR(12),
   PRIMARY KEY(id),
-  CONSTRAINT fk_role_id FOREIGN KEY (role_id) REFERENCES `role`(id)
+  CONSTRAINT fk_groups_id FOREIGN KEY (groups_id) REFERENCES `groups`(id)
 );
 
 
@@ -148,11 +161,31 @@ INSERT INTO `status` VALUES(2, 'approved');
 INSERT INTO `status` VALUES(3, 'picked_up');
 INSERT INTO `status` VALUES(4, 'returned');
 
-INSERT INTO role VALUES(1, 'User');
+INSERT INTO role VALUES(1, 'Root');
 INSERT INTO role VALUES(2, 'Administrator');
+INSERT INTO role VALUES(3, 'Trip Leader');
+INSERT INTO role VALUES(4, 'Volunteer');
 
-INSERT INTO personnel_info(id, `name`, role_id, email) VALUES(1, 'Scott Shipp', 2, 'shipps@seattleu.edu');
-INSERT INTO personnel_info(id, `name`, role_id, email) VALUES(2, 'Joe Gearborrower', 1, 'joegearborrower@gmail.com');
+INSERT INTO groups(role_id, group_name) values(1, 'Root Group');
+INSERT INTO groups(role_id, group_name) values(2, 'Group A');
+INSERT INTO groups(role_id, group_name) values(3, 'Group B');
+INSERT INTO groups(role_id, group_name) values(4, 'Group C');
+
+
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(1, 'Scott Shipp', 2, 'shipps@seattleu.edu');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(2, 'Temourshah Ahmady', 2, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(3, 'Hatoon Almoajel', 2, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(4, 'Hesham Alsaeedi', 2, 'alsaeedi@seattleu.edu');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(5, 'Michael Cheung', 3, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(6, 'Kellie Fontes', 3, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(7, 'Nitika Goyal', 3, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(8, 'Kyle McNutt', 3, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(9, 'Bakkiyalakshmi Ramanjulu', 4, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(10, 'Jaysheel Shah', 4, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(11, 'Matthew Smith', 4, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(12, 'Lyza Thenumkal', 4, '');
+INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(13, 'Martina Ugwuh', 4, '');
+
 
 INSERT INTO size VALUES(1, 'X-Sm');
 INSERT INTO size VALUES(2, 'Sm');
@@ -749,4 +782,61 @@ AS trend
 GROUP BY trend.name;
 
 END$$
+
+
+-- ================================================
+-- Handling User Groups and Roles
+-- ================================================
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS getGroups;
+DELIMITER $$
+CREATE PROCEDURE getGroups()
+BEGIN
+	SELECT g.*, r.role_name
+    FROM wta.groups as g
+    JOIN wta.role as r
+    ON r.id = g.role_id;
+END$$
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS createGroup;
+DELIMITER $$
+CREATE PROCEDURE createGroup(IN groupName VARCHAR(255), IN roleID INT)
+BEGIN
+	INSERT groups(group_name, role_id) values(groupName, roleID);
+END$$
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS getGroupMembers;
+DELIMITER $$
+CREATE PROCEDURE getGroupMembers(IN groupID INT)
+BEGIN
+	SELECT g.id as group_id, g.role_id as role_id, g.group_name, p.id as UserID, p.name, p.email, p.phone_number, p.address_line_1, p.address_line_2, p.address_line_3, p.city, p.state, p.zip_code 
+    FROM groups as g
+    JOIN personnel_info as p 
+    ON p.groups_id = g.id
+    WHERE g.id = groupID;
+END$$
+DELIMITER ;
+
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS getRoles;
+DELIMITER $$
+CREATE PROCEDURE getRoles()
+BEGIN
+	SELECT r.*
+    FROM wta.role as r;
+END$$
+
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS moveUser;
+DELIMITER $$
+CREATE PROCEDURE moveUser(IN UserID INT, IN GroupID INT)
+BEGIN
+	UPDATE personnel_info SET groups_id = GroupID WHERE id = UserID;
+END$$
+
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="wta">
+<html lang="en" ng-app="wta" itemscope itemtype="http://schema.org/Article">
     <head>
         <style>
             /* This helps the ng-show/ng-hide animations start at the right place. */
@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css">
         <link rel="stylesheet" href="/src/client/styles/app.css">
-
+        
     </head>
     <body>
         
@@ -100,6 +100,9 @@
         <script src="/src/client/app/gear-trend/gear-trend.route.js"></script>
         <script src="/src/client/app/gear-trend/gear-trend.controller.js"></script>
 
+        <!-- Group Manager Module -->
+        <script src="/src/client/app/group-manager/group-manager.module.js"></script>
+        <script src="/src/client/app/group-manager/group-manager.route.js"></script>
+        <script src="/src/client/app/group-manager/group-manager.controller.js"></script>
     </body>
 </html>
-

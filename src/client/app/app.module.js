@@ -11,7 +11,8 @@
       'wta.approve-request',
       'wta.gear-trend',
       'wta.view-history-report',
-      'wta.more-gear-details'
+      'wta.more-gear-details',
+      'wta.group-manager'
   ])
 
 })();

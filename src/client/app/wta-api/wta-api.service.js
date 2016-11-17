@@ -23,7 +23,12 @@
       getGearTrend: getGearTrend,
       getHistoryByDate: getHistoryByDate,
       getHistoryByTripLeader: getHistoryByTripLeader,
-      getGearDetails: getGearDetails
+      getGearDetails: getGearDetails,
+      getGroups: getGroups,
+      getGroupMembers: getGroupMembers,
+      getRoles: getRoles,
+      createGroup: createGroup,
+      moveUser: moveUser
     }
     return service;
     
@@ -49,6 +54,44 @@
       }
     }
 
+    function createGroup(groupName, roleID) {
+      var createGroupUrl = baseUrl + '/create_group/';
+      var groupRequest = {
+        "groupName": groupName,
+        "roleID": roleID
+      }
+      return $http.post(createGroupUrl, groupRequest)
+        .then(createGroupCompleted)
+        .catch(createGroupFailed);
+        
+      function createGroupCompleted(response) {
+          return response.data;
+      }
+      
+      function createGroupFailed(error) {
+          logger.error('XHR Failed for POST CreateGroup '+error.data);
+      }
+    }
+
+    function moveUser(groupID, userID) {
+      var moveUserUrl = baseUrl + '/move_user/';
+      var groupRequest = {
+        "groupID": groupID,
+        "userID": userID
+      }
+      return $http.post(moveUserUrl, groupRequest)
+        .then(moveUserCompleted)
+        .catch(moveUserFailed);
+        
+      function moveUserCompleted(response) {
+          return response.data;
+      }
+      
+      function moveUserFailed(error) {
+          logger.error('XHR Failed for POST moveUser '+error.data);
+      } 
+    }
+
     function getAvailableGear(startDate, endDate) {
       var getAvailableGearUrl = baseUrl + '/gear_availability/';
       getAvailableGearUrl += '?startdate=' + startDate + '&enddate=' + endDate;
@@ -62,6 +105,52 @@
 
       function getAvailableGearFailed(error) {
         logger.error('XHR Failed for GET AvailableGear ' + error.data);
+      }
+    }
+
+    function getGroupMembers(groupID) {
+      var getGroupMembersUrl = baseUrl + '/group_members/';
+      getGroupMembersUrl += '?groupID=' + groupID;
+      return $http.get(getGroupMembersUrl)
+        .then(getGroupMembersComplete)
+        .catch(getGroupMembersFailed);
+
+      function getGroupMembersComplete(response) {
+        return response.data[0];
+      }
+
+      function getGroupMembersFailed(error) {
+        logger.error('XHR Failed for GET Group Members ' + error.data);
+      }
+    }
+
+    function getGroups() {
+      var getAvailableGearUrl = baseUrl + '/groups/';
+      return $http.get(getAvailableGearUrl)
+        .then(getGroupsComplete)
+        .catch(getGroupsFailed);
+
+      function getGroupsComplete(response) {
+        return response.data[0];
+      }
+
+      function getGroupsFailed(error) {
+        logger.error('XHR Failed for GET GetGroups ' + error.data);
+      }
+    }
+
+    function getRoles() {
+      var getRolesUrl = baseUrl + '/roles/';
+      return $http.get(getRolesUrl)
+        .then(getRolesComplete)
+        .catch(getRolesFailed);
+
+      function getRolesComplete(response) {
+        return response.data[0];
+      }
+
+      function getRolesFailed(error) {
+        logger.error('XHR Failed for GET getRoles ' + error.data);
       }
     }
 

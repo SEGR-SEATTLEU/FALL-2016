@@ -170,7 +170,7 @@ INSERT INTO groups(role_id, group_name) values(1, 'Root Group');
 INSERT INTO groups(role_id, group_name) values(2, 'Group A');
 INSERT INTO groups(role_id, group_name) values(3, 'Group B');
 INSERT INTO groups(role_id, group_name) values(4, 'Group C');
-
+INSERT INTO groups(role_id, group_name) values(3, 'New User');
 
 INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(1, 'Scott Shipp', 2, 'shipps@seattleu.edu');
 INSERT INTO personnel_info(id, `name`, groups_id, email) VALUES(2, 'Temourshah Ahmady', 2, '');
@@ -839,4 +839,16 @@ BEGIN
 	UPDATE personnel_info SET groups_id = GroupID WHERE id = UserID;
 END$$
 
+DELIMITER ;
+DROP PROCEDURE IF EXISTS getGroups;
+DELIMITER $$
+CREATE PROCEDURE getUserInfo(IN UserID INT)
+BEGIN
+    SELECT userInfo.id as user_id, userInfo.name, g.id as group_id, g.group_name, r.id as role_id, r.role_name from personnel_info as userInfo
+    JOIN groups as g
+    ON g.id = userInfo.groups_id
+    JOIN role as r
+    ON r.id = g.role_id
+    WHERE userInfo.id = UserID;
+END$$
 

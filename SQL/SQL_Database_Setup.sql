@@ -301,6 +301,39 @@ INSERT INTO reserved_item VALUES(9, 3, 10, 1);  -- 1 youth med fleece jacket
 INSERT INTO reserved_item VALUES(10, 3, 510, 1);  -- 1 Men's sm gloves 
 INSERT INTO reserved_item VALUES(11, 3, 630, 1); -- 1 75 liter backpacking pack 
 
+INSERT INTO request VALUES(4, 2, '2016-12-01', '2016-12-04', 2); -- Approved Status
+INSERT INTO reserved_item VALUES(13, 4, 390, 2); -- 2 women's 8 hiking boots 
+INSERT INTO reserved_item VALUES(14, 4, 650, 2); -- 2 2-person tents 
+INSERT INTO reserved_item VALUES(15, 4, 580, 3); -- 4 50 liter backpacking packs
+
+INSERT INTO request VALUES(5, 2, '2016-12-13', '2016-12-19', 1); -- Requested Status
+INSERT INTO reserved_item VALUES(16, 5, 70, 1); -- 1 men's 10 hiking boots 
+INSERT INTO reserved_item VALUES(17, 5, 80, 1); -- 1 women's 8 hiking boots 
+INSERT INTO reserved_item VALUES(18, 5, 150, 3); -- 3 2-person tents 
+INSERT INTO reserved_item VALUES(19, 5, 190, 1); -- 5 50 liter backpacking packs
+
+INSERT INTO request VALUES(6, 2, '2016-12-22', '2016-12-24', 1); -- Requested Status
+INSERT INTO reserved_item VALUES(20, 6, 10, 1);  -- 1 youth med fleece jacket 
+INSERT INTO reserved_item VALUES(21, 6, 510, 1);  -- 1 Men's sm gloves 
+INSERT INTO reserved_item VALUES(22, 6, 630, 1); -- 1 75 liter backpacking pack
+
+INSERT INTO request VALUES(7, 2, '2017-01-03', '2017-01-09', 1); -- Requested Status
+INSERT INTO reserved_item VALUES(23, 7, 470, 2); -- 2 men's 10 hiking boots
+INSERT INTO reserved_item VALUES(24, 7, 80, 2); -- 2 women's 8 hiking boots 
+INSERT INTO reserved_item VALUES(25, 7, 500, 10); -- 2 2-person tents 
+INSERT INTO reserved_item VALUES(26, 7, 550, 8); -- 4 50 liter backpacking packs
+
+INSERT INTO request VALUES(8, 2, '2017-01-11', '2017-01-15', 1); -- Requested Status
+INSERT INTO reserved_item VALUES(27, 8, 70, 1); -- 1 men's 10 hiking boots 
+INSERT INTO reserved_item VALUES(28, 8, 500, 1); -- 1 women's 8 hiking boots 
+INSERT INTO reserved_item VALUES(29, 8, 650, 3); -- 3 2-person tents 
+INSERT INTO reserved_item VALUES(30, 8, 580, 4); -- 5 50 liter backpacking packs
+
+INSERT INTO request VALUES(9, 2, '2017-01-28', '2017-01-31', 1); -- Requested Status
+INSERT INTO reserved_item VALUES(32, 9, 180, 3);  -- 1 youth med fleece jacket 
+INSERT INTO reserved_item VALUES(33, 9, 510, 1);  -- 1 Men's sm gloves 
+INSERT INTO reserved_item VALUES(34, 9, 120, 1); -- 1 75 liter backpacking pack
+
 
 
 -- ====================================================================================================================================
@@ -607,6 +640,32 @@ BEGIN
 END$$
 
 -- ================================================
+-- US 9a
+-- ================================================
+DELIMITER ;
+DROP PROCEDURE IF EXISTS get_gear_inventory;
+DELIMITER $$
+CREATE PROCEDURE `get_gear_inventory`()
+BEGIN
+		SELECT  Inventory.id, Inventory.name, 
+			size.size,
+			IFNULL(Inventory.total_quantity - SUM(ReservedGears.quantity), Inventory.total_quantity) as QuantityAvailable	 
+		FROM ( 
+			SELECT a.id as GearID, SUM(b.quantity) as quantity
+			FROM gear_item as a
+			JOIN reserved_item as b
+				ON a.id = b.item_id
+                GROUP BY GearID) 
+			as ReservedGears
+		right JOIN gear_item as Inventory
+			ON Inventory.id = ReservedGears.GearID
+		JOIN size
+			ON size.id = Inventory.size_id
+		GROUP BY Inventory.id, Inventory.name, size.size;
+ END$$
+DELIMITER ;
+
+-- ================================================
 -- US 10
 -- ================================================
 DELIMITER ;            
@@ -619,7 +678,7 @@ CREATE PROCEDURE RequestHistoryByTripLeader(IN `TripLeader` VARCHAR(50)) READS S
 	JOIN reserved_item ri ON ri.request_id = r.id
 	JOIN gear_item gi ON gi.id = ri.item_id
 	JOIN status s ON r.status_id = s.id
-	WHERE (pi.name = TripLeader AND r.end_date > CURDATE())
+	WHERE (pi.name = TripLeader AND r.end_date < CURDATE())
     GROUP BY (r.end_date);
 DELIMITER $$
     

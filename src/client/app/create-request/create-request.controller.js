@@ -35,13 +35,17 @@
     vm.needToCheckout = true;
     vm.headerText = 'Available Gear:';
     vm.requestSuccessful = false;
-    vm.boolCheck = true;
+    vm.gearsWithValidQuantity = [];
 
     vm.findAvailableGear = findAvailableGear;
     vm.proceedToCheckout = proceedToCheckout;
     vm.createRequest = createRequest;
     vm.goBack = goBack;
+<<<<<<< HEAD
     vm.validate = validate;
+=======
+    vm.invalidRequest = invalidRequest;
+>>>>>>> 1408c3c5a0a1ed00049c0a42520a7937c90bab9f
     vm.openStartPicker = openStartPicker;
     vm.openEndPicker = openEndPicker;
     vm.validDates = validDates;

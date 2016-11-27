@@ -13,14 +13,16 @@
     var service = {
       createRequest : createRequest,
       getAvailableGear: getAvailableGear,
+      findAllGear: findAllGear,
       getRequestSummary: getRequestSummary,
       getReturns: getReturns,
       confirmReturn: confirmReturn,
       getGearRequests: getGearRequests,
       approveRequest: approveRequest,
       getGearTrend: getGearTrend,
+      getHistoryByDate: getHistoryByDate,
+      getHistoryByTripLeader: getHistoryByTripLeader,
       getGearDetails: getGearDetails
-
     }
     return service;
     
@@ -59,6 +61,21 @@
 
       function getAvailableGearFailed(error) {
         logger.error('XHR Failed for GET AvailableGear ' + error.data);
+      }
+    }
+
+    function findAllGear() {
+      var findAllGearUrl = baseUrl + '/gear_inventory/';
+      return $http.get(findAllGearUrl)
+        .then(findAllGearComplete)
+        .catch(findAllGearFailed);
+
+      function findAllGearComplete(response) {
+        return response.data[0];
+      }
+
+      function findAllGearFailed(error) {
+        logger.error('XHR Failed for GET AllGear ' + error.data);
       }
     }
 
@@ -153,6 +170,38 @@
       
       function gearTrendFailed(error) {
           logger.error('XHR Failed for POST GearTrend '+error.data);
+      }
+    }
+
+    function getHistoryByDate(startDate, endDate) {
+      var getHistoryUrl = baseUrl + '/view_history_byDate/';
+      getHistoryUrl += '?startdate=' + startDate + '&enddate=' + endDate;
+      return $http.get(getHistoryUrl)
+        .then(getHistoryComplete)
+        .catch(getHistoryFailed);
+
+      function getHistoryComplete(response) {
+        return response.data[0];
+      }
+
+      function getHistoryFailed(error) {
+        logger.error('XHR Failed for GET History by Date ' + error.data);
+      }
+    }
+
+    function getHistoryByTripLeader(name) {
+      var getHistoryUrl = baseUrl + '/view_history_byTripLeader/';
+      getHistoryUrl += '?name=' + name;
+      return $http.get(getHistoryUrl)
+        .then(getHistoryComplete)
+        .catch(getHistoryFailed);
+
+      function getHistoryComplete(response) {
+        return response.data[0];
+      }
+
+      function getHistoryFailed(error) {
+        logger.error('XHR Failed for GET History by Date ' + error.data);
       }
     }
 

@@ -63,7 +63,9 @@
               <td>{{gear.gender}}</td>
               <td>{{gear.QuantityAvailable}}</td>
               <td>
+
                 <input class="quantityInput" type="number" min= "0" ng-model="gear.quantity" ng-change="vm.validate($index)"/>
+
                 <span class="label label-danger validator"  ng-show="gear.quantity > {{gear.QuantityAvailable}}">Quantity too large!</span>
               </td>
             </tr>
@@ -72,7 +74,7 @@
       </div>
     </div>
     <div ng-if="vm.needToCheckout" class="row">
-      <button id="proceedToCheckout" ng-click="vm.proceedToCheckout()" type="submit" class="btn btn-default">Proceed to Checkout</button>
+      <button id="proceedToCheckout" ng-click="vm.proceedToCheckout()" type="submit" class="btn btn-default" ng-disabled="vm.invalidRequest()">Proceed to Checkout</button>
     </div>
     <div ng-if="!vm.needToCheckout" class="row">
       <button ng-click="vm.goBack()" type="submit" class="btn btn-default">Back</button>

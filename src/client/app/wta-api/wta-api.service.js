@@ -28,7 +28,9 @@
       getGroupMembers: getGroupMembers,
       getRoles: getRoles,
       createGroup: createGroup,
-      moveUser: moveUser
+      moveUser: moveUser,
+      getUserByEmail: getUserByEmail,
+      createUser: createUser
     }
     return service;
     
@@ -136,6 +138,40 @@
 
       function getGroupsFailed(error) {
         logger.error('XHR Failed for GET GetGroups ' + error.data);
+      }
+    }
+
+    function getUserByEmail(email) {
+      var getUserByEmailUrl = baseUrl + '/user?email=' + email;
+      return $http.get(getUserByEmailUrl)
+        .then(getUserByEmailComplete)
+        .catch(getUserByEmailFailed);
+
+      function getUserByEmailComplete(response) {
+        return response.data[0][0];
+      }
+
+      function getUserByEmailFailed(error) {
+        logger.error('XHR Failed for GET GetUserByEmail: ' + error.info);
+      } 
+    }
+
+    function createUser(email, name) {
+      var createUserUrl = baseUrl + '/create_user/';
+      var user = {
+        email: email,
+        name: name
+      };
+      return $http.post(createUserUrl, user)
+        .then(createUserComplete)
+        .catch(createUserFailed);
+
+      function createUserComplete(response) {
+        return response.data;
+      }
+
+      function createUserFailed(error) {
+        logger.error('XHR Failed for POST CreateUser: ' + error.info);
       }
     }
 

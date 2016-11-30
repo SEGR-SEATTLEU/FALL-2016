@@ -12,7 +12,8 @@
       'wta.gear-trend',
       'wta.view-history-report',
       'wta.more-gear-details',
-      'wta.group-manager'
+      'wta.group-manager',
+      'wta.login'
   ])
 
 })();

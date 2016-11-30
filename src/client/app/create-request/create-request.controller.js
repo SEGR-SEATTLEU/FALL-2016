@@ -5,9 +5,9 @@
     .module('wta.create-request')
     .controller('CreateRequestController', CreateRequestController);
 
-  CreateRequestController.$inject = ['logger', 'WtaApi'];
+  CreateRequestController.$inject = ['logger', 'WtaApi', 'ProfileAccess', '$state'];
 
-  function CreateRequestController(logger, WtaApi) {
+  function CreateRequestController(logger, WtaApi, ProfileAccess, $state) {
     var vm = this;
 
     var date = new Date();
@@ -52,7 +52,11 @@
     /////////////////////
 
     function activate() {
-      logger.info("Activated Create Request");
+      if(ProfileAccess.getProfile()) {
+        logger.info("Activated Create Request");
+      } else {
+        $state.go('login');
+      }
     }
 
     function findAvailableGear() {

@@ -839,6 +839,10 @@ BEGIN
 	UPDATE personnel_info SET groups_id = GroupID WHERE id = UserID;
 END$$
 
+-- ================================================
+-- Handling User
+-- ================================================
+
 DELIMITER ;
 DROP PROCEDURE IF EXISTS getUserInfo;
 DELIMITER $$
@@ -852,3 +856,26 @@ BEGIN
     WHERE userInfo.id = UserID;
 END$$
 
+DELIMITER ;
+DROP PROCEDURE IF EXISTS getUserInfoByEmail;
+DELIMITER $$
+CREATE PROCEDURE getUserInfoByEmail(IN Email VARCHAR(50))
+BEGIN
+    SELECT userInfo.id as user_id, userInfo.name, userInfo.email, userInfo.phone_number, userInfo.address_line_1, 
+		userInfo.address_line_2, userInfo.address_line_3, userInfo.city, userInfo.state, userInfo.zip_code, g.id as group_id, 
+        g.group_name, r.id as role_id, r.role_name 
+    from personnel_info as userInfo
+    JOIN groups as g
+    ON g.id = userInfo.groups_id
+    JOIN role as r
+    ON r.id = g.role_id
+    WHERE userInfo.email = Email;
+END$$
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS createUser;
+DELIMITER $$
+CREATE PROCEDURE createUser(IN Email VARCHAR(50), IN UserName VARCHAR(50))
+BEGIN
+    INSERT INTO personnel_info(`name`, groups_id, email) VALUES(UserName, 5, Email);
+END$$

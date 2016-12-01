@@ -5,8 +5,8 @@
     .module('wta.gear-trend')
     .controller('GearTrendController', GearTrendController);
 
-  GearTrendController.$inject = ['logger', 'WtaApi'];
-  function GearTrendController(logger, WtaApi) {
+  GearTrendController.$inject = ['logger', 'WtaApi', 'ProfileAccess', '$state'];
+  function GearTrendController(logger, WtaApi, ProfileAccess, $state) {
     var vm = this;
 
     vm.gearTrendList = [];

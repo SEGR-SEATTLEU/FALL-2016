@@ -2,8 +2,8 @@
   'use strict';
 
   angular
-    .module('wta.view-history-report')
-    .controller('ViewHistoryReportController', ViewHistoryReportController);
+      .module('wta.view-history-report')
+      .controller('ViewHistoryReportController', ViewHistoryReportController);
 
   ViewHistoryReportController.$inject = ['logger', 'WtaApi'];
 
@@ -22,7 +22,7 @@
     vm.getHistoryReportByTripLeader = getHistoryReportByTripLeader;
 
     activate();
-    
+
     /////////////////////
 
     function activate() {
@@ -45,6 +45,6 @@
         return vm.reports;
       });
     }
-    
+
   }
 })();

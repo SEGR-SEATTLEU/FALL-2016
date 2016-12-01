@@ -14,10 +14,17 @@
     vm.selectedYear = "";
     vm.getGearTrend = getGearTrend;
     vm.headerText = 'Season Trend Report';
+    vm.authorized = false;
 
     activate();
 
     function activate() {
+        var profile = ProfileAccess.getProfile();
+        if(profile) {
+            vm.authorized = profile.role_id == 2 || profile.role_id == 4;
+        } else {
+            $state.go('login');
+        }
         var year = new Date().getFullYear();
         vm.selectedYear = year;
         vm.years.push(year);
@@ -27,6 +34,9 @@
     }
 
     function getGearTrend() {
+        if(!vm.authorized) {
+            return;
+        }
         WtaApi.getGearTrend(vm.selectedYear).then(function(gearTrendList) {
         vm.gearTrendList = gearTrendList;
       });

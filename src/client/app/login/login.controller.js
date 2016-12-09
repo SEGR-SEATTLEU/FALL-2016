@@ -29,7 +29,11 @@
       WtaApi.getUserByEmail(profile.U3).then(function(user) {
         if(user) {
           ProfileAccess.setProfile(user);
-          $state.go('createRequest');
+          if (profile.role_id == 3) {
+            $state.go('createRequest');
+          } else {
+            $state.go('approveRequest');           
+          }
         } else {
           // User doesn't exist
           WtaApi.createUser(profile.U3, profile.ig).then(function(user) {

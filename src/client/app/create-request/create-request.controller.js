@@ -47,6 +47,8 @@
     vm.openEndPicker = openEndPicker;
     vm.validDates = validDates;
 
+    var profile = ProfileAccess.getProfile();
+
     activate();
     
     /////////////////////
@@ -70,7 +72,7 @@
     function createRequest() {
       var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
       var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
-      WtaApi.createRequest(startDate, endDate, vm.gears).then(function(res) {
+      WtaApi.createRequest(startDate, endDate, vm.gears, profile.user_id).then(function(res) {
         if( res === true ) {
           vm.requestSuccessful = true;
           vm.headerText = 'Request Submitted!';

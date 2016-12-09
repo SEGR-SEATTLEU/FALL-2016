@@ -783,6 +783,24 @@ GROUP BY trend.name;
 
 END$$
 
+-- ===========================================================
+-- User story to fecth all the gear requests of logged in user
+-- ===========================================================
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS get_user_gear_requests;
+DELIMITER $$
+CREATE PROCEDURE get_user_gear_requests(IN `userId` INT) READS SQL DATA
+BEGIN
+	-- This procedure returns list of gear requests which is in 'Requested' and 'Approved' status
+	SELECT rq.id request_id, rq.start_date, rq.end_date , cr.`name` requester, st.`status`
+		FROM request rq
+        JOIN `status` st ON rq.status_id = st.id
+        JOIN personnel_info cr ON rq.customer_id = cr.id
+        WHERE cr.id = userId;
+        
+END$$
+
 
 -- ================================================
 -- Handling User Groups and Roles

@@ -20,6 +20,7 @@
       <li><a ui-sref="viewHistoryReport">View History Report</a></li>
       <li><a ui-sref="approveRequest">Approve Request</a></li>
       <li><a ui-sref="gearTrend">Gear Trend Report</a></li>
+      <li ng-if="vm.trip_leader || vm.admin"><a ui-sref="requestSummary">Gear Requests</a></li>
       <li ng-if="vm.admin"><a ui-sref="groupManager">Group Manager</a></li>
     </ul>
     <!--<div class="col-sm-3 col-md-3">

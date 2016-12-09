@@ -5,10 +5,10 @@
     .module('wta.gear-availability-report')
     .controller('GearAvailabilityReportController', GearAvailabilityReportController);
 
-  GearAvailabilityReportController.$inject = ['logger', 'WtaApi'];
+  GearAvailabilityReportController.$inject = ['logger', 'WtaApi', 'ProfileAccess', '$state'];
 
   //activate();
-  function GearAvailabilityReportController(logger, WtaApi) {
+  function GearAvailabilityReportController(logger, WtaApi, ProfileAccess, $state) {
     var vm = this;
 
     var date = new Date();
@@ -38,12 +38,19 @@
     vm.openStartPicker = openStartPicker;
     vm.openEndPicker = openEndPicker;
     vm.validDates = validDates;
+    vm.authorized = false;
     activate();
     
     /////////////////////
 
     function activate() {
-      logger.info("Activated Create Request");
+      var profile = ProfileAccess.getProfile();
+      if(profile) {
+        vm.authorized = profile.role_id == 3;
+      } else {
+        $state.go('login');
+      }
+      logger.info("Activated Gear Availability Report");
     }
 
     function openStartPicker() {
@@ -59,6 +66,10 @@
     }
 
     function findAvailableGear() {
+      if(!vm.authorized) {
+        return;
+      }
+
       console.log("The findAvailableGear function has been called successfully");
       var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
       var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));

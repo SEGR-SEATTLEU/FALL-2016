@@ -13,7 +13,7 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
-      <li class="active" ng-if="vm.trip_leader"><a ui-sref="createRequest">Create Request</a></li>
+      <li ng-if="vm.trip_leader" class="active"><a ui-sref="createRequest">Create Request</a></li>
       <li><a ui-sref="gearAvailabilityReport">Gear Availability Report</a></li>
       <li><a ui-sref="gearInventory">Gear Inventory</a></li>
       <li><a ui-sref="manageReturns">Manage Returns</a></li>

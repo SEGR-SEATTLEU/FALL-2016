@@ -25,11 +25,13 @@
       // Profile Google ID: profile.Eea
       // Profile Google Pic: profile.Paa
       var profile = googleUser.getBasicProfile();
+      var profile_id;
       debugger;
       WtaApi.getUserByEmail(profile.U3).then(function(user) {
         if(user) {
           ProfileAccess.setProfile(user);
-          if (profile.role_id == 3) {
+          profile_id = ProfileAccess.getProfile();
+          if (profile_id.role_id == 3) {
             $state.go('createRequest');
           } else {
             $state.go('approveRequest');           

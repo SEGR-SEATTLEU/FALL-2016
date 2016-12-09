@@ -30,6 +30,7 @@
     
     if(profile) {
         vm.admin = profile.role_id == 1 || profile.role_id == 2;
+        vm.trip_leader = profile.role_id == 3;
     } else {
       $state.go('login');
     }

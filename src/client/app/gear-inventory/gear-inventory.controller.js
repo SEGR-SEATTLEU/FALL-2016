@@ -8,7 +8,7 @@
 GearInventoryController.$inject = ['logger', 'WtaApi', 'ProfileAccess', '$state'];
   
   //activate();
-  function GearInventoryController(logger, WtaApi) {
+  function GearInventoryController(logger, WtaApi, ProfileAccess, $state) {
     var vm = this;
 
     var nTemp = 10;

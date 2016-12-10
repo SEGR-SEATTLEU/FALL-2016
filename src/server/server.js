@@ -15,6 +15,7 @@ var viewHistoryController = require('./controllers/view-history-controller');
 var gearInventoryController = require('./controllers/gear-inventory-controller');
 var groupManagerController = require('./controllers/group-manager-controller');
 var userController = require('./controllers/user-controller');
+var userGearRequestsController = require('./controllers/user-gear-requests-controller');
 var app = express();
 
 
@@ -44,6 +45,7 @@ viewHistoryController.configure(app);
 gearInventoryController.configure(app);
 groupManagerController.configure(app);
 userController.configure(app);
+userGearRequestsController.configure(app);
 
 var server = app.listen(8000, function () {
     console.log('Server listening on port ' + server.address().port);

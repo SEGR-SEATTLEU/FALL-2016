@@ -15,7 +15,9 @@
     <ul class="nav navbar-nav">
       <li ng-if="vm.trip_leader" class="active"><a ui-sref="createRequest">Create Request</a></li>
       <li ng-if="vm.trip_leader"><a ui-sref="gearAvailabilityReport">Gear Availability Report</a></li>
+
       <li ng-if="vm.admin"><a ui-sref="gearInventory">Gear Inventory</a></li>
+
       <li><a ui-sref="manageReturns">Manage Returns</a></li>
       <li><a ui-sref="viewHistoryReport">View History Report</a></li>
       <li><a ui-sref="approveRequest">Approve Request</a></li>

@@ -9,6 +9,7 @@
 
   function CreateRequestController(logger, WtaApi, ProfileAccess, $state) {
     var vm = this;
+    vm.authorized = false;
 
     var date = new Date();
     vm.startDate = date;
@@ -47,16 +48,20 @@
     vm.openEndPicker = openEndPicker;
     vm.validDates = validDates;
 
+    var profile = ProfileAccess.getProfile();
+
     activate();
     
     /////////////////////
 
     function activate() {
-      if(ProfileAccess.getProfile()) {
-        logger.info("Activated Create Request");
+      var profile = ProfileAccess.getProfile();
+      if(profile) {
+        vm.authorized = profile.role_id == 3;
       } else {
         $state.go('login');
       }
+      logger.info("Activated Create Request");
     }
 
     function findAvailableGear() {
@@ -68,9 +73,12 @@
     }
 
     function createRequest() {
+      if (!vm.authorized) {
+        return;
+      }
       var startDate = vm.startDate.toISOString().substring(0, vm.startDate.toISOString().indexOf('T'));
       var endDate = vm.endDate.toISOString().substring(0, vm.endDate.toISOString().indexOf('T'));
-      WtaApi.createRequest(startDate, endDate, vm.gears).then(function(res) {
+      WtaApi.createRequest(startDate, endDate, vm.gears, profile.user_id).then(function(res) {
         if( res === true ) {
           vm.requestSuccessful = true;
           vm.headerText = 'Request Submitted!';

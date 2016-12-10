@@ -2,11 +2,16 @@
 
 <div class="general-padding">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3" ng-if="vm.authorized">
       <h1>{{vm.headerText}}</h1>
     </div>
   </div>
-  <div ng-if="!vm.requestSuccessful && vm.needToCheckout" class="row">
+
+  <div class="general-padding" ng-if="!vm.authorized">
+    <h1>You are not authorized to view this page.</h1>
+  </div>
+
+  <div ng-if="!vm.requestSuccessful && vm.needToCheckout && vm.authorized" class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label for="pickUpDate">Pickup Date</label>

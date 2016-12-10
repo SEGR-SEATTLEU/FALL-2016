@@ -30,18 +30,20 @@
       createGroup: createGroup,
       moveUser: moveUser,
       getUserByEmail: getUserByEmail,
-      createUser: createUser
+      createUser: createUser,
+      getUserGearRequests: getUserGearRequests,
     }
     return service;
     
     /////////////////////
 
-    function createRequest(startDate, endDate, gears) {
+    function createRequest(startDate, endDate, gears, userId) {
       var createRequestUrl = baseUrl + '/request/';
       var gearRequest = {
         "startdate": startDate,
         "enddate": endDate,
-        "gears": gears
+        "gears": gears,
+        "userId": userId,
       }
       return $http.post(createRequestUrl, gearRequest)
         .then(createRequestComplete)
@@ -284,6 +286,21 @@
       }
 
       function getGearRequestsFailed(error) {
+        logger.error('XHR Failed for GET GearRequests' + error.data);
+      }
+    }
+
+    function getUserGearRequests(userId) {
+      var getUserGearRequestsUrl = baseUrl + '/get_user_gear_requests/?userId=' + userId;
+      return $http.get(getUserGearRequestsUrl)
+        .then(getUserGearRequestsComplete)
+        .catch(getUserGearRequestsFailed);
+
+      function getUserGearRequestsComplete(response) {
+        return response.data[0];
+      }
+
+      function getUserGearRequestsFailed(error) {
         logger.error('XHR Failed for GET GearRequests' + error.data);
       }
     }

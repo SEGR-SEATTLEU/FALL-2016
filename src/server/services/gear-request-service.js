@@ -24,7 +24,7 @@ function Request() {
     // post: error is logged if request is not created successfully.
     this.post = function (req, res) {
         connection.acquire(function (err, con) {
-            con.query('CALL create_request(\'' + req.startdate + '\',\'' + req.enddate + '\',\'' + JSON.stringify(req).replace(/'/g, "\\'") + '\',1);', req, function (err, result) {
+            con.query('CALL create_request(\'' + req.startdate + '\',\'' + req.enddate + '\',\'' + JSON.stringify(req).replace(/'/g, "\\'") + '\',\'' + req.userId + '\');', req, function (err, result) {
                 con.release();    
                 if (err) {
                     console.log(err);

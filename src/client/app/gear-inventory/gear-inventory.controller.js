@@ -5,8 +5,8 @@
     .module('wta.gear-inventory')
     .controller('GearInventoryController', GearInventoryController);
 
-  GearInventoryController.$inject = ['logger', 'WtaApi'];
-
+GearInventoryController.$inject = ['logger', 'WtaApi', 'ProfileAccess', '$state'];
+  
   //activate();
   function GearInventoryController(logger, WtaApi) {
     var vm = this;

@@ -5,8 +5,8 @@
     .module('wta.gear-inventory')
     .controller('GearInventoryController', GearInventoryController);
 
-  GearInventoryController.$inject = ['logger', 'WtaApi'];
-
+GearInventoryController.$inject = ['logger', 'WtaApi', 'ProfileAccess', '$state'];
+  
   //activate();
   function GearInventoryController(logger, WtaApi) {
     var vm = this;
@@ -24,6 +24,12 @@
     /////////////////////
 
     function activate() {
+      var profile = ProfileAccess.getProfile();
+      if(profile) {
+            vm.authorized = profile.role_id == 2 || profile.role_id == 4;
+        } else {
+            $state.go('login');
+        }
       logger.info("Displayed Gear Inventory");
     }
 
